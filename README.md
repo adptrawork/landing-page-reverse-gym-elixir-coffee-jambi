@@ -16,7 +16,11 @@ npm run build
 - Connect to Git di Cloudflare Pages → pilih repo ini
 - Custom domain + SSL otomatis setelah setup domain
 
-## Sumber gambar (16 Okt 2026)
+## Sumber gambar (diperbarui 16 Okt 2026 — audit relevansi section)
 - Prioritas 1 (IG @reverse.fitnessindonesia terverifikasi + @elixir.coffeexperience): profil + bio terverifikasi dipakai untuk data. Foto postingan tertutup login — tidak bisa download. DICATAT: ganti dengan foto asli bila sudah ada.
-- Prioritas 2 (dipakai): Unsplash bebas lisensi, relevan konteks per section:
-  reverse-1 area beban (photo-1534438327276), -2 InBody/asesmen (photo-1571019613454), -3 coaching (photo-1571731956672), -4 recovery/sauna (photo-1544161515), -5 interior kafe (photo-1554118811), -6 kopi (photo-1509042239860), -7 makan sehat (photo-1512621776951). Semua <100KB di public/images, alt+width/height+caption.
+- Foto dipertahankan (sudah cocok): reverse-1 rak dumbel training center, reverse-5 interior kafe Elixir, reverse-6 latte art kopi, reverse-7 salad bowl (aset cadangan, belum dipakai di src).
+- Foto diganti (mismatch → Wikimedia Commons, ≤100KB, alt + width/height + decoding async):
+  - reverse-2 InBody Check: foto sit-up (bukan alat ukur) → pengukuran lingkar pinggang dengan pita ukur (CC0 — Petr Kratochvil, "Waist measurement").
+  - reverse-3 Fatloss Specialist: foto solo tanpa coach → deretan treadmill kosong area kardio (CC BY-SA 4.0 — GhoziSeptiandri, "Treadmill-gym").
+  - reverse-4 Recovery Physio: foto spa minyak telanjang (bukan physio) → terapi kaki klinis berpakaian dengan resistance band (CC BY 2.0 — Shixart1985, "Leg treatment in physiatry").
+- Halaman /pelatih memakai kartu inisial tanpa foto wajah (tidak ada klaim identitas palsu).

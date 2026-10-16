@@ -47,14 +47,14 @@ export const programs = [
     badge: 'Terverifikasi',
     desc: 'Spesialis fatloss — klaim bio IG resmi. Target & progres dipantau coach.',
     img: '/images/reverse-3.jpg',
-    alt: 'Coach Reverse Gym mendampingi program fatloss member',
+    alt: 'Deretan treadmill area kardio untuk program fatloss Reverse Gym Jambi',
   },
   {
     name: 'Recovery: Physio & Pemulihan',
     badge: 'Terverifikasi',
     desc: 'Highlight Physio + pilar Recovery di bio IG. Detail layanan via WA.',
     img: '/images/reverse-4.jpg',
-    alt: 'Area pemulihan dan physio Reverse Gym Jambi',
+    alt: 'Sesi terapi physio untuk pemulihan member Reverse Gym Jambi',
   },
   {
     name: 'Elixir Coffee — Kopi & Nongkrong Sehat',

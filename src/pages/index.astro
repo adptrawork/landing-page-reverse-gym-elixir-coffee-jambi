@@ -1,207 +1,355 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import StatsStrip from '../components/StatsStrip.astro';
-import ClassCard from '../components/ClassCard.astro';
-import CoachCard from '../components/CoachCard.astro';
-import PriceCompare from '../components/PriceCompare.astro';
-import TrialForm from '../components/TrialForm.astro';
-import Faq from '../components/Faq.astro';
+import SectionHead from '../components/SectionHead.astro';
 import MapFacade from '../components/MapFacade.astro';
-import { business, prices, waLink } from '../data/business';
-const heroCta = waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`);
-const faqs = [
-    { q: 'Apa itu InBody check?', a: 'Ukur komposisi tubuh (lemak, otot, air) sebagai dasar program — sesuai highlight InBody di IG resmi. Tarif cek via WA.' },
-    { q: 'Apakah ada physio?', a: 'Ada — highlight Physio di IG resmi. Untuk keluhan cedera/nyeri, konsultasi dulu via WA 0813-7000-780.' },
-    { q: 'Elixir Coffee satu lokasi?', a: 'Ya — Jl. Nias Kota Baru (samping SMP Ahmad Dahlan). Weekday 06.00–22.00, weekend 06.00–23.00, tersedia di GrabFood.' },
-    { q: 'Pemula obesitas bisa ikut?', a: 'Justru itu spesialisnya (fatloss). Program personal sesuai hasil asesmen, bukan kelas massal.' },
-    { q: 'Harga di web ini pasti?', a: 'Harga gym bersifat estimasi; paket fatloss & bundling konfirmasi via WA sebelum bayar.' }
+import { business, programs, waLink } from '../data/business';
+
+const waGym = waLink('Halo Reverse Gym & Elixir Coffee, saya mau tanya program gym dan InBody check.');
+const waCoffee = waLink('Halo Elixir Coffee, saya mau tanya menu dan jam buka.');
+const waUmum = waLink('Halo Reverse Gym & Elixir Coffee, saya mau tanya keanggotaan dan tarif.');
+
+// Layanan inti gym (zig-zag) & entri kafe (papan menu) — hanya dari business.ts.
+const gymPrograms = programs.slice(0, 4);
+const cafeEntries = programs.slice(4, 6);
+
+const alur = [
+  {
+    n: '01',
+    t: 'Konsultasi & asesmen',
+    d: 'Ceritakan tujuanmu, lalu mulai dari InBody check untuk membaca komposisi tubuh. InBody dan physio tercatat di sorotan IG resmi @reverse.fitnessindonesia.',
+  },
+  {
+    n: '02',
+    t: 'Susun program & pilih keanggotaan',
+    d: 'Personalized program by experts disusun dari hasil asesmen. Tarif paket dan durasi dikonfirmasi via WhatsApp — harga di situs ini berlabel estimasi.',
+  },
+  {
+    n: '03',
+    t: 'Latihan, pulihkan, lalu ngopi',
+    d: 'Latihan di training center, pendampingan pilar recovery, lalu jeda di Elixir Coffee. Gym dan kafe berada di satu lokasi, tanpa pindah tempat.',
+  },
 ];
-const statsItems = '2,2rb~pengikut IG terverifikasi|3~pilar recovery–performance–longevity|5+~layanan specialist*|17 jam~Elixir buka tiap weekday'.split('|').map((s) => ({ value: s.split('~')[0], label: s.split('~')[1] }));
+
+const fasilitas = [
+  { t: 'InBody', d: 'Pengukuran komposisi tubuh sebelum program disusun.', b: 'Terverifikasi' },
+  { t: 'Physio', d: 'Pendampingan pemulihan untuk keluhan nyeri atau cedera.', b: 'Terverifikasi' },
+  { t: 'Training center', d: 'Area latihan beban dan kardio untuk sesi harian.', b: 'Terverifikasi' },
+  { t: 'Coach', d: 'Pendampingan personal sesuai tujuan dan kondisi.', b: 'Terverifikasi' },
+  { t: 'EnglishClub', d: 'Kegiatan tambahan yang tampil di sorotan IG resmi; jadwal via WhatsApp.', b: 'Terverifikasi' },
+];
+
+const jam = [
+  { k: 'Elixir Coffee — weekday', v: '06.00–22.00', b: 'Terverifikasi IG' },
+  { k: 'Elixir Coffee — weekend', v: '06.00–23.00', b: 'Terverifikasi IG' },
+  { k: 'InBody & physio', v: 'Jadwal: konfirmasi via WA', b: 'Terverifikasi IG' },
+  { k: 'Pemesanan Elixir', v: 'Dine-in & GrabFood', b: 'Terverifikasi IG' },
+];
 ---
-<!-- Ref: Unbounce fitness — hero → problem → solution → proof → offer → risk-reversal → CTA -->
-<!-- Ref: MuffinGroup — hero kuat + program Upper Body Blast dsb + CTA trial tiap segmen + foto member/alat/instruktur aksi -->
-<!-- Ref: NYSC — 1 warna pop teal-800 + font treatment beda (mono angka/label) -->
-<BaseLayout title={business.title} description={business.description} canonicalPath="/" image={business.ogImage}>
-  <!-- 01 HERO -->
-  <section class="relative w-full overflow-hidden bg-stone-900 text-white" aria-labelledby="hero">
-    <img src="/images/reverse-1.jpg" alt="Area beban training center Reverse Gym Jambi" width="800" height="533" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 h-full w-full object-cover" />
-    <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/70 to-stone-900/25" aria-hidden="true"></div>
-    <div class="relative max-w-7xl mx-auto px-4 pt-20 pb-32 md:pt-28 md:pb-44">
-      <p class="rise d1 inline-flex items-center gap-2 rounded-full border border-white/30 bg-stone-900/60 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-white/90">MEDICAL GYM &bull; Jambi</p>
-      <h1 id="hero" class="rise d2 mt-5 max-w-[16ch] text-4xl md:text-6xl font-black uppercase leading-[0.95] tracking-tighter">Fatloss terukur, bukan tebakan</h1>
-      <p class="rise d3 mt-5 max-w-[52ch] text-base leading-relaxed text-white/80">Personalized program by experts, InBody check, pendampingan physio — satu lokasi dengan Elixir Coffee.</p>
-      <div class="rise d3 mt-8 flex flex-wrap gap-3">
-        <a href={heroCta} class="inline-flex min-h-[48px] items-center rounded-full bg-teal-800 px-8 font-black uppercase tracking-wide text-sm text-white transition hover:opacity-90 active:scale-[0.98]">Konsultasi Fatloss</a>
-        <a href="/harga" class="inline-flex min-h-[48px] items-center rounded-full border border-white/50 px-8 font-bold uppercase tracking-wide text-sm hover:bg-white hover:text-stone-900 active:scale-[0.98]">Lihat Harga</a>
-      </div>
-      <p class="rise d4 mt-6 font-mono-num text-xs uppercase tracking-[0.18em] text-white/60">Program unggulan: Personalized Fatloss Program</p>
-    </div>
-  </section>
+<!-- Ref: duality editorial dark earthy — kolase asimetris + dua panel identitas -->
+<BaseLayout
+  title="Reverse Gym & Elixir Coffee Jambi — Gym & Kopi Satu Atap"
+  description="Medical & family gym Jambi: InBody check, fatloss specialist, physio, plus Elixir Coffee di satu lokasi Jl. Nias. Konsultasi program via WhatsApp 0813-7000-780."
+  canonicalPath="/"
+  image={business.ogImage}
+>
 
-  <!-- 02 STATS STRIP -->
-  <StatsStrip items={statsItems} note="*Estimasi — detail layanan konfirmasi via WA 0813-7000-780." accent="teal-800" />
-
-  <!-- MARQUEE -->
-  <div class="marquee bg-stone-900 text-white border-t border-white/10 py-3" aria-label="Sorotan layanan">
-    <div class="marquee-track font-black uppercase tracking-widest text-sm">
-      <div class="flex shrink-0" aria-hidden="false">
-              {<span class="px-6 py-1 whitespace-nowrap">InBody Check <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Fatloss Specialist <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Personalized Program <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Physio <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Training Center <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Elixir Coffee <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Recovery <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Longevity <span class="ml-6 opacity-50">/</span></span>}
-      </div>
-      <div class="flex shrink-0" aria-hidden="true">
-              {<span class="px-6 py-1 whitespace-nowrap">InBody Check <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Fatloss Specialist <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Personalized Program <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Physio <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Training Center <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Elixir Coffee <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Recovery <span class="ml-6 opacity-50">/</span></span>}
-              {<span class="px-6 py-1 whitespace-nowrap">Longevity <span class="ml-6 opacity-50">/</span></span>}
-      </div>
-    </div>
-  </div>
-
-  <!-- PROBLEM -->
-  <!-- Ref: Unbounce fitness — problem agitation -->
-  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="masalah">
-    <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Masalah member</p>
-    <h2 id="masalah" class="mt-2 max-w-[20ch] text-3xl md:text-4xl font-black uppercase tracking-tighter">Kenapa resolusi gym gagal?</h2>
-    <div class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
-        <div class="rounded-3xl border border-stone-200 bg-white p-6"><p class="font-extrabold">Diet gagal terus</p><p class="mt-1 text-sm text-stone-600">Program fatloss specialist berbasis data InBody — progres dipantau, bukan kira-kira.</p></div>
-        <div class="rounded-3xl border border-stone-200 bg-white p-6"><p class="font-extrabold">Cedera kambuh saat latihan</p><p class="mt-1 text-sm text-stone-600">Pilar recovery + physio bantu latihan aman sesuai kondisi.</p></div>
-        <div class="rounded-3xl border border-stone-200 bg-white p-6"><p class="font-extrabold">Gym terasa intimidating</p><p class="mt-1 text-sm text-stone-600">Medical & family gym — personal, tenang, satu lokasi dengan kafe.</p></div>
-    </div>
-  </section>
-
-  <!-- 03 PROGRAM & KELAS -->
-  <!-- Ref: MuffinGroup — kartu jadwal nama/hari/jam/level + CTA trial tiap segmen -->
-  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="program">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-      <div class="md:col-span-8">
-        <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Program &amp; kelas</p>
-        <h2 id="program" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Jadwal yang bikin konsisten</h2>
-      </div>
-      <p class="md:col-span-4 text-base text-stone-600">Label Terverifikasi = klaim IG resmi. <a class="underline underline-offset-4 font-semibold" href="/program">Semua program</a></p>
-    </div>
-    <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <ClassCard name="Personalized Program by Experts" day="Senin–Sabtu" time="By appointment" level="Semua level" img="/images/reverse-1.jpg" alt="Area beban training center Reverse Gym Jambi" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
-        <ClassCard name="InBody Check" day="Senin–Sabtu" time="15 menit" level="Semua level" img="/images/reverse-2.jpg" alt="Asesmen komposisi tubuh InBody di Reverse Gym Jambi" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
-        <ClassCard name="Fatloss Specialist" day="12 minggu" time="Terjadwal" level="Pemula–menengah" img="/images/reverse-3.jpg" alt="Deretan treadmill area kardio untuk program fatloss Reverse Gym Jambi" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
-        <ClassCard name="Recovery: Physio & Pemulihan" day="By appointment" time="45 menit" level="Semua level" img="/images/reverse-4.jpg" alt="Sesi terapi physio untuk pemulihan member Reverse Gym Jambi" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
-        <ClassCard name="Elixir Coffee Hangout" day="Weekday" time="06.00–22.00" level="Semua level" img="/images/reverse-5.jpg" alt="Interior Elixir Coffee Kota Baru Jambi" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
-        <ClassCard name="Protein Bar & Recovery Meal" day="Weekend" time="06.00–23.00" level="Semua level" img="/images/reverse-6.jpg" alt="Kopi susu dan minuman protein Elixir Coffee Jambi" badge="Estimasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
-    </div>
-    <p class="mt-3 text-xs text-stone-400">Foto konteks — ganti foto asli lokasi.</p>
-    <p class="mt-4 text-sm text-stone-500 md:hidden" aria-hidden="true">↓ Geser / gulir untuk lihat semua jadwal</p>
-  </section>
-
-  <!-- 04 PELATIH -->
-  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="pelatih">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-      <div class="md:col-span-8">
-        <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Pelatih</p>
-        <h2 id="pelatih" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Didampingi, bukan dilepas</h2>
-      </div>
-      <p class="md:col-span-4 text-base text-stone-600"><a class="underline underline-offset-4 font-semibold" href="/pelatih">Semua pelatih</a></p>
-    </div>
-    <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <CoachCard role="Coach Fatloss & Performance" spec="Fatloss specialist" credential="Bio IG terverifikasi" desc="Fatloss Specialist + personalized program — klaim IG resmi terverifikasi." badge="Terverifikasi (klaim bio)" />
-        <CoachCard role="Physio / Recovery" spec="Recovery & nyeri gerak" credential="Highlight IG" desc="Highlight Physio di IG resmi. Keluhan cedera/nyeri konsultasi dulu via WA." badge="Terverifikasi (highlight)" />
-        <CoachCard role="Coach Training Center" spec="Strength & conditioning" credential="Training center" desc="Highlight Coach & Training center di IG resmi." badge="Terverifikasi (highlight)" />
-    </div>
-  </section>
-
-  <!-- 05 HARGA -->
-  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="harga">
-    <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Harga</p>
-    <h2 id="harga" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Pilih paketmu</h2>
-    <div class="mt-8 grid grid-cols-1 gap-5 md:hidden">
-      {prices.slice(0, 3).map((p, i) => (
-        <article class:list={["relative rounded-3xl border p-6", i === 2 ? "border-teal-800 bg-stone-900 text-white" : "border-stone-200 bg-white"]}>
-          {i === 2 && <p class="absolute -top-3 left-6 rounded-full bg-teal-800 px-3 py-1 text-[11px] font-black uppercase tracking-widest text-white">Terpopuler</p>}
-          <p class="font-mono-num text-[11px] font-bold uppercase tracking-[0.18em]">{p.badge}</p>
-          <h3 class="mt-1 font-extrabold">{p.name}</h3>
-          <p class="mt-1 font-mono-num text-2xl font-bold">{p.price}</p>
-          <p class="mt-1 text-sm opacity-80">{p.desc}</p>
-        </article>
-      ))}
-    </div>
-    <div class="mt-8 hidden md:block">
-      <PriceCompare accent="teal-800" note="Harga estimasi — paket fatloss & bundling Gym+Elixir konfirmasi via WA 0813-7000-780." items={prices.map((p, i) => ({ ...p, featured: i === 2, href: typeof heroCta === 'string' ? heroCta : '/kontak' }))} />
-    </div>
-    <p class="mt-4 text-sm text-stone-600 md:hidden">Harga estimasi — paket fatloss & bundling Gym+Elixir konfirmasi via WA 0813-7000-780. <a class="underline underline-offset-4 font-semibold" href="/harga">Semua harga</a></p>
-  </section>
-
-  <!-- 06 TRIAL -->
-  <!-- Ref: Unbounce fitness — offer + risk-reversal -->
-  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="trial">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+  <!-- 01 HERO — kolase asimetris, bukan hero center -->
+  <section class="relative min-h-[100dvh] border-b b-rule" aria-labelledby="hero">
+    <div class="mx-auto grid max-w-[80rem] grid-cols-1 items-center gap-12 px-5 pb-16 pt-12 md:grid-cols-12 md:gap-14 md:px-8 md:pb-24 md:pt-20">
       <div class="md:col-span-5">
-        <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Trial / konsultasi</p>
-        <h2 id="trial" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Coba dulu, cocok baru lanjut</h2>
-        <p class="mt-3 text-base text-stone-600">Isi form 30 detik — otomatis lanjut ke kontak resmi. Tanpa komitmen, tanpa spam.</p>
-        <ul class="mt-4 space-y-2 text-sm text-stone-600">
-          <li>✓ Slot trial dicek manual admin</li>
-          <li>✓ Boleh tanya harga &amp; jadwal dulu</li>
-          <li>✓ Pemula dibantu mulai dari nol</li>
+        <p class="eyebrow rise" style="--i:0">Reverse Gym &times; Elixir Coffee &mdash; Jl. Nias, Kota Jambi</p>
+        <h1 id="hero" class="font-display rise mt-5 text-[clamp(2.4rem,7.2vw,4.6rem)] leading-[1.02]" style="--i:1">
+          Dua karakter, satu atap &mdash; latihan yang serius, kopi yang tenang.
+        </h1>
+        <p class="rise mt-6 max-w-[46ch] text-base text-soft" style="--i:2">
+          Medical &amp; family gym dengan fatloss specialist, InBody check, dan pendampingan physio.
+          Di sebelahnya, Elixir Coffee untuk jeda setelah sesi.
+        </p>
+        <div class="rise mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2" style="--i:3">
+          <a href={waGym} class="btn btn-solid" target="_blank" rel="noopener">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7v10M8 5v14M16 5v14M20 7v10M8 12h8" stroke-linecap="round"/></svg>
+            Mulai dari sisi gym
+          </a>
+          <a href="#kopi" class="btn btn-ghost">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 8h11v6a5 5 0 0 1-5 5H10a5 5 0 0 1-5-5V8ZM16 9h2.5a2.5 2.5 0 0 1 0 5H16M4 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Kenali sisi kopi
+          </a>
+        </div>
+        <p class="rise mt-6 text-xs text-soft" style="--i:4">
+          Label <strong class="font-semibold text-sage">Terverifikasi</strong> berarti bersumber dari bio/highlight IG resmi.
+          Harga <strong class="font-semibold text-sage">Estimasi</strong> dikonfirmasi via WhatsApp sebelum membayar.
+        </p>
+      </div>
+
+      <!-- Kolase: 4:3 besar + 3:4 tinggi + 16:9 lebar -->
+      <div class="collage md:col-span-7" role="group" aria-label="Kolase suasana gym dan kafe">
+        <figure class="frame collage__main rise aspect-[4/3] rounded-sm border b-rule" style="--i:1">
+          <img src="/images/reverse-1.jpg" alt="Rak dumbel di area beban training center Reverse Gym Jambi" width="800" height="533" loading="eager" fetchpriority="high" decoding="async" />
+        </figure>
+        <figure class="frame collage__tall rise aspect-[3/4] rounded-sm border b-rule" style="--i:2">
+          <img src="/images/reverse-6.jpg" alt="Latte art kopi Elixir Coffee Jambi" width="720" height="1080" loading="lazy" decoding="async" />
+        </figure>
+        <figure class="frame collage__wide rise aspect-[16/9] rounded-sm border b-rule" style="--i:3">
+          <img src="/images/reverse-3.jpg" alt="Deretan treadmill area kardio Reverse Gym Jambi" width="800" height="555" loading="lazy" decoding="async" />
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 DUA PANEL IDENTITAS — split asimetris 1.15fr / .85fr dengan rule -->
+  <section class="border-b b-rule py-14 md:py-24" aria-labelledby="identitas">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <SectionHead
+        id="identitas"
+        index="02"
+        eyebrow="Satu lokasi, dua karakter"
+        title="Gym yang mengukur, kafe yang menenangkan"
+        lead="Dua wajah dari alamat yang sama di Jl. Nias, Kota Baru. Pilih sisi mana yang kamu butuhkan lebih dulu — keduanya bisa dalam satu kunjungan."
+      />
+
+      <div class="duo mt-12">
+        <div class="duo__left">
+          <p class="eyebrow">Reverse &mdash; sisi latihan</p>
+          <h3 class="font-display mt-3 text-[clamp(1.6rem,3.4vw,2.4rem)] leading-tight">Recovery, performance, longevity</h3>
+          <p class="mt-4 max-w-[48ch] text-sm text-soft">
+            Medical &amp; family gym dengan spesialisasi fatloss. Program disusun personal dari hasil asesmen,
+            bukan kelas massal dengan satu resep untuk semua.
+          </p>
+          <ul class="rowlist mt-8 border-t b-rule">
+            {gymPrograms.map((p, i) => (
+              <li class="grid grid-cols-[2.5rem_1fr] items-baseline gap-4 py-4">
+                <span class="num font-display text-lg text-accent" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span class="text-sm font-semibold">{p.name}</span>
+              </li>
+            ))}
+          </ul>
+          <a href="/program" class="btn btn-ghost mt-8 w-full sm:w-auto">Lihat semua program</a>
+        </div>
+
+        <div class="duo__right mt-12 md:mt-0">
+          <figure class="frame aspect-[16/9] rounded-sm border b-rule">
+            <img src="/images/reverse-5.jpg" alt="Ruang kafe Elixir Coffee Kota Baru Jambi" width="720" height="494" loading="lazy" decoding="async" />
+          </figure>
+          <p class="on-bg-2 eyebrow mt-6">Elixir &mdash; sisi kopi</p>
+          <h3 class="font-display mt-3 text-[clamp(1.6rem,3.4vw,2.4rem)] leading-tight">Kopi, makanan, dan jeda</h3>
+          <p class="on-bg-2 mt-4 max-w-[44ch] text-sm">
+            Setelah sesi, tinggal menyeberang: kopi, opsi makan sehat, dan tempat duduk yang tenang.
+            Tersedia untuk dine-in maupun pesan antar.
+          </p>
+          <ul class="rowlist mt-8 border-t b-rule">
+            {cafeEntries.map((p) => (
+              <li class="grid grid-cols-[1fr_auto] items-baseline gap-4 py-4">
+                <span class="text-sm font-semibold">{p.name}</span>
+                <span class="on-bg-2 text-[11px] font-semibold uppercase tracking-[0.16em]">{p.badge}</span>
+              </li>
+            ))}
+          </ul>
+          <a href="#kopi" class="btn btn-ghost mt-8 w-full">Menu kafe</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ALUR TIGA TAHAP — list bernomor ber-rule -->
+  <section class="border-b b-rule py-14 md:py-24" aria-labelledby="alur">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <SectionHead
+        id="alur"
+        index="03"
+        eyebrow="Alur bergabung"
+        title="Tiga tahap, dari konsultasi sampai ngopi"
+        lead="Tidak ada langkah yang dipaksakan. Setiap tahap dikonfirmasi lewat WhatsApp resmi 0813-7000-780."
+      />
+      <ol class="rowlist mt-12 border-t b-rule">
+        {alur.map((s, i) => (
+          <li class="step rise" style={`--i:${i + 1}`}>
+            <span class="num font-display text-4xl leading-none text-accent" aria-hidden="true">{s.n}</span>
+            <h3 class="font-display text-2xl leading-snug">{s.t}</h3>
+            <p class="max-w-[52ch] text-sm text-soft">{s.d}</p>
+          </li>
+        ))}
+      </ol>
+      <a href={waUmum} class="btn btn-solid mt-10 w-full sm:w-auto" target="_blank" rel="noopener">Tanya keanggotaan</a>
+    </div>
+  </section>
+
+  <!-- 04 PROGRAM GYM — zig-zag 2 kolom + daftar jam ber-rule -->
+  <section class="border-b b-rule py-14 md:py-24" aria-labelledby="program">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <SectionHead
+        id="program"
+        index="04"
+        eyebrow="Program & jam"
+        title="Empat layanan inti di sisi gym"
+        lead="Setiap nama di bawah ini berasal dari bio atau sorotan IG resmi. Detail jadwal dan tarif dikonfirmasi via WhatsApp."
+      />
+
+      <div class="mt-14 grid gap-14 md:gap-20">
+        {gymPrograms.map((p, i) => (
+          <article class="zig">
+            <figure class:list={['frame aspect-[4/3] rounded-sm border b-rule', i % 2 === 1 && 'md:order-2']}>
+              <img src={p.img} alt={p.alt} width="800" height="600" loading="lazy" decoding="async" />
+            </figure>
+            <div class:list={[i % 2 === 1 && 'md:order-1']}>
+              <p class="eyebrow flex items-center gap-3">
+                <span class="num text-accent">{String(i + 1).padStart(2, '0')}</span>
+                <span>{p.badge}</span>
+              </p>
+              <h3 class="font-display mt-3 text-[clamp(1.5rem,3vw,2.2rem)] leading-tight">{p.name}</h3>
+              <p class="mt-3 max-w-[48ch] text-sm text-soft">{p.desc}</p>
+              <a href={waGym} class="btn btn-ghost mt-6" target="_blank" rel="noopener">Tanya layanan ini</a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-16 grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-8">
+        <div class="md:col-span-4">
+          <h3 class="eyebrow">Jam &amp; akses</h3>
+          <p class="mt-3 max-w-[38ch] text-sm text-soft">
+            Jam Elixir Coffee tercatat di IG resmi. Jam gym dan sesi InBody/physio belum dipublikasikan —
+            tanyakan langsung agar tidak salah datang.
+          </p>
+        </div>
+        <ul class="rowlist md:col-span-8">
+          {jam.map((j) => (
+            <li class="grid grid-cols-[1fr_auto] items-baseline gap-4 border-t b-rule py-4 md:grid-cols-[1fr_auto_10rem]">
+              <span class="text-sm">{j.k}</span>
+              <span class="num text-sm font-semibold text-accent">{j.v}</span>
+              <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-soft md:text-right">{j.b}</span>
+            </li>
+          ))}
         </ul>
       </div>
-      <div class="md:col-span-7">
-        <TrialForm action={`https://wa.me/${business.phone}`} gymName={business.name} kind="wa" accent="teal-800" />
-      </div>
     </div>
   </section>
 
-  <!-- 07 PROOF -->
-  <!-- Ref: MuffinGroup — foto member asli + alat + instruktur aksi; Unbounce — proof -->
-  <section class="py-12 md:py-20" aria-labelledby="bukti">
-    <div class="max-w-7xl mx-auto px-4">
-      <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Bukti</p>
-      <h2 id="bukti" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Kata mereka yang latihan</h2>
-      <div class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
-        <figure class="rounded-3xl border border-stone-200 bg-white p-6"><div class="font-mono-num text-xs text-stone-400">Estimasi — ilustratif</div><blockquote class="mt-2 text-sm leading-relaxed text-stone-700">“InBody check di awal bikin target jelas. Coach pantau progres tiap sesi, turun 6 kg.”</blockquote><figcaption class="mt-3 text-sm font-bold">Andra <span class="font-normal text-stone-500">— Paket fatloss 12 minggu</span></figcaption></figure>
-        <figure class="rounded-3xl border border-stone-200 bg-white p-6"><div class="font-mono-num text-xs text-stone-400">Estimasi — ilustratif</div><blockquote class="mt-2 text-sm leading-relaxed text-stone-700">“Habis latihan langsung ngopi sehat di Elixir. Tempatnya bersih, coach-nya detail.”</blockquote><figcaption class="mt-3 text-sm font-bold">Maya <span class="font-normal text-stone-500">— Member + Elixir regular</span></figcaption></figure>
-        <figure class="rounded-3xl border border-stone-200 bg-white p-6"><div class="font-mono-num text-xs text-stone-400">Estimasi — ilustratif</div><blockquote class="mt-2 text-sm leading-relaxed text-stone-700">“Sakit pinggang membaik setelah sesi recovery. Disarankan latihan lanjutan yang aman.”</blockquote><figcaption class="mt-3 text-sm font-bold">Riko <span class="font-normal text-stone-500">— Recovery physio</span></figcaption></figure>
+  <!-- 05 MENU KAFE — daftar dua kolom bergaya menu kafe (nama + leader + harga) -->
+  <section id="kopi" class="border-b b-rule bg-bg-2 py-14 md:py-24" aria-labelledby="menu">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <header class="grid grid-cols-1 gap-5 md:grid-cols-12 md:items-end md:gap-8">
+        <div class="md:col-span-7">
+          <p class="eyebrow flex items-center gap-3">
+            <span class="num text-accent">05</span>
+            <span>Elixir Coffee</span>
+            <span class="hidden h-px w-16 shrink-0 bg-sage/40 sm:block" aria-hidden="true"></span>
+          </p>
+          <h2 id="menu" class="font-display mt-3 text-[clamp(1.9rem,4.6vw,3.15rem)] leading-[1.06]">Papan menu kafe</h2>
+        </div>
+        <p class="on-bg-2 max-w-[46ch] text-sm md:col-span-5">
+          Dua kategori yang tercatat di data resmi. Daftar menu lengkap dan harga aktual ada di IG
+          @elixir.coffeexperience dan GrabFood.
+        </p>
+      </header>
+
+      <div class="mt-12 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
+        <div>
+          <h3 class="on-bg-2 eyebrow">Kopi &amp; minuman</h3>
+          <ul class="rowlist mt-4 border-t b-rule">
+            <li class="flex items-baseline py-4">
+              <span class="text-base">Kopi &amp; nongkrong di Elixir</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="text-sm font-semibold text-sage">Cek IG</span>
+            </li>
+            <li class="flex items-baseline py-4">
+              <span class="text-base">Latte art &amp; kopi susu</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="text-sm font-semibold text-sage">Cek GrabFood</span>
+            </li>
+            <li class="flex items-baseline py-4">
+              <span class="text-base">Jam buka weekday</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="num text-sm font-semibold text-fg">06.00–22.00</span>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="on-bg-2 eyebrow">Makanan &amp; pendamping latihan</h3>
+          <ul class="rowlist mt-4 border-t b-rule">
+            <li class="flex items-baseline py-4">
+              <span class="text-base">Protein bar &amp; makan sehat</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="text-sm font-semibold text-sage">Konfirmasi WA</span>
+            </li>
+            <li class="flex items-baseline py-4">
+              <span class="text-base">Menu pendamping setelah latihan</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="text-sm font-semibold text-sage">Cek IG</span>
+            </li>
+            <li class="flex items-baseline py-4">
+              <span class="text-base">Jam buka weekend</span>
+              <span class="leader" aria-hidden="true"></span>
+              <span class="num text-sm font-semibold text-fg">06.00–23.00</span>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="mt-8">
-      <p class="max-w-7xl mx-auto px-4 font-mono-num text-xs uppercase tracking-[0.18em] text-stone-500">Galeri fasilitas — geser →</p>
-      <div class="snap-rail no-scrollbar mt-4 flex gap-4 overflow-x-auto px-4 md:px-[max(1rem,calc((100vw-80rem)/2+1rem))] pb-2">
-          <figure class="snap-item shrink-0 w-[80vw] sm:w-[360px] overflow-hidden rounded-3xl border border-stone-200 bg-white"><img src="/images/reverse-1.jpg" alt="Area beban training center Reverse Gym Jambi" width="800" height="600" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover" /><figcaption class="px-4 py-3 text-xs text-stone-500">Foto konteks — ganti foto asli lokasi.</figcaption></figure>
-          <figure class="snap-item shrink-0 w-[80vw] sm:w-[360px] overflow-hidden rounded-3xl border border-stone-200 bg-white"><img src="/images/reverse-2.jpg" alt="Asesmen komposisi tubuh InBody di Reverse Gym Jambi" width="800" height="600" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover" /><figcaption class="px-4 py-3 text-xs text-stone-500">Foto konteks — ganti foto asli lokasi.</figcaption></figure>
-          <figure class="snap-item shrink-0 w-[80vw] sm:w-[360px] overflow-hidden rounded-3xl border border-stone-200 bg-white"><img src="/images/reverse-4.jpg" alt="Sesi terapi physio untuk pemulihan member Reverse Gym Jambi" width="800" height="600" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover" /><figcaption class="px-4 py-3 text-xs text-stone-500">Foto konteks — ganti foto asli lokasi.</figcaption></figure>
-          <figure class="snap-item shrink-0 w-[80vw] sm:w-[360px] overflow-hidden rounded-3xl border border-stone-200 bg-white"><img src="/images/reverse-5.jpg" alt="Interior Elixir Coffee Kota Baru Jambi" width="800" height="600" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover" /><figcaption class="px-4 py-3 text-xs text-stone-500">Foto konteks — ganti foto asli lokasi.</figcaption></figure>
-      </div>
-    </div>
-    <div class="max-w-7xl mx-auto px-4 mt-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-      <div class="md:col-span-4">
-        <h3 class="font-extrabold text-lg">Lokasi &amp; jam</h3>
-        <p class="mt-2 text-sm text-stone-600">{business.address}.<br />{business.hours}.</p>
-        <a href="/kontak" class="mt-4 inline-flex min-h-[48px] items-center rounded-full border border-stone-300 px-6 text-sm font-bold uppercase tracking-wide">Rute &amp; kontak</a>
-      </div>
-      <div class="md:col-span-8">
-        <MapFacade src={business.mapsEmbed} title="Peta Reverse Jambi" mapsUrl={business.mapsUrl} />
-      </div>
+
+      <p class="on-bg-2 mt-10 max-w-[70ch] text-xs">
+        Harga menu belum dipublikasikan pada sumber data yang tersedia, jadi sengaja tidak dicantumkan di sini.
+        Label <strong class="font-semibold text-fg">Estimasi</strong> pada data bisnis menandakan perlu konfirmasi.
+      </p>
+      <a href={waCoffee} class="btn btn-fg mt-6 w-full sm:w-auto" target="_blank" rel="noopener">Tanya menu Elixir</a>
     </div>
   </section>
 
-  <!-- 08 FAQ + FINAL CTA -->
-  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="faq">
-    <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">FAQ</p>
-    <h2 id="faq" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Masih ragu? Wajar.</h2>
-    <div class="mt-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-      <div class="md:col-span-7"><Faq items={faqs} /></div>
-      <div class={`md:col-span-5 rounded-3xl bg-stone-900 p-8 text-white`}>
-        <p class="font-mono-num text-xs uppercase tracking-[0.18em] text-white/60">Final CTA — tanpa risiko</p>
-        <p class="mt-2 text-2xl font-black uppercase tracking-tight">Slot trial minggu ini terbatas</p>
-        <p class="mt-2 text-sm text-white/70">Amankan slotmu sekarang — gratis tanya, tanpa komitmen.</p>
-        <a href={heroCta} class="mt-6 inline-flex min-h-[48px] items-center rounded-full bg-white px-8 text-sm font-black uppercase tracking-wide text-stone-900 transition hover:opacity-90 active:scale-[0.98]">Konsultasi Fatloss</a>
+  <!-- 06 FASILITAS TAMBAHAN — list ber-rule -->
+  <section class="border-b b-rule py-14 md:py-24" aria-labelledby="fasilitas">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <SectionHead
+        id="fasilitas"
+        index="06"
+        eyebrow="Fasilitas & layanan"
+        title="Yang tersedia di sorotan resmi"
+        lead="Daftar ini mengikuti sorotan (highlight) IG @reverse.fitnessindonesia — bukan klaim tambahan dari kami."
+      />
+      <ul class="rowlist mt-12 border-t b-rule">
+        {fasilitas.map((f, i) => (
+          <li class="grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 border-b b-rule py-5 md:grid-cols-[14rem_1fr_9rem]">
+            <h3 class="font-display text-xl leading-none">{f.t}</h3>
+            <p class="text-sm text-soft">{f.d}</p>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-sage md:text-right">{f.b}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 07 LOKASI & JAM + MapFacade + CTA WhatsApp -->
+  <section class="py-14 md:py-24" aria-labelledby="lokasi">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <SectionHead
+        id="lokasi"
+        index="07"
+        eyebrow="Lokasi & jam"
+        title="Satu alamat di Jl. Nias, Kota Baru"
+        lead="Alamat gym dan kafe sama. Peta dimuat hanya setelah kamu klik, supaya halaman tetap ringan."
+      />
+      <div class="mt-12 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
+        <div class="md:col-span-4">
+          <dl class="rowlist border-t b-rule">
+            <div class="py-4">
+              <dt class="eyebrow">Alamat</dt>
+              <dd class="mt-2 text-sm">{business.address}</dd>
+            </div>
+            <div class="py-4">
+              <dt class="eyebrow">Jam</dt>
+              <dd class="mt-2 text-sm">{business.hours}</dd>
+            </div>
+            <div class="py-4">
+              <dt class="eyebrow">WhatsApp</dt>
+              <dd class="mt-2 text-sm">0813-7000-780</dd>
+            </div>
+          </dl>
+          <div class="mt-8 grid gap-3">
+            <a href={waUmum} class="btn btn-solid w-full" target="_blank" rel="noopener">Konsultasi via WhatsApp</a>
+            <a href={business.mapsUrl} class="btn btn-ghost w-full" target="_blank" rel="noopener">Buka rute Google Maps</a>
+          </div>
+        </div>
+        <div class="md:col-span-8">
+          <MapFacade src={business.mapsEmbed} title="Peta lokasi Reverse Gym & Elixir Coffee, Jl. Nias Kota Baru Jambi" mapsUrl={business.mapsUrl} />
+        </div>
       </div>
     </div>
   </section>

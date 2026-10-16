@@ -1,12 +1,53 @@
 ---
+interface Crumb { name: string; path: string }
 interface Props {
   title: string;
   description: string;
   canonicalUrl: string;
   image?: string;
+  breadcrumb?: Crumb[];
 }
-const { title, description, canonicalUrl, image = '/images/reverse-1.jpg' } = Astro.props;
+const { title, description, canonicalUrl, image = '/images/reverse-1.jpg', breadcrumb = [] } = Astro.props;
+const site = (Astro.site?.toString() ?? 'https://landing-page-reverse-gym-elixir-coffee-jambi.adi-putra-work1.workers.dev').replace(/\/$/, '');
 const ogImage = new URL(image, Astro.site ?? Astro.url).toString();
+
+// JSON-LD LocalBusiness (ExerciseGym adalah subtipe LocalBusiness) — hanya data terverifikasi.
+const localBusiness = {
+  "@context": "https://schema.org",
+  "@type": ["ExerciseGym", "LocalBusiness"],
+  "@id": `${site}/#business`,
+  name: "Reverse Gym & Elixir Coffee",
+  url: `${site}/`,
+  image: ogImage,
+  description: description,
+  telephone: "+628137000780",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Jl. Nias, Kota Baru",
+    addressLocality: "Kota Jambi",
+    addressRegion: "Jambi",
+    addressCountry: "ID"
+  },
+  sameAs: [
+    "https://www.instagram.com/reverse.fitnessindonesia",
+    "https://www.instagram.com/elixir.coffeexperience"
+  ],
+  exerciseType: ["Physiotherapy", "Nutrition"]
+};
+
+// BreadcrumbList — selalu diawali Beranda.
+const trails: Crumb[] = [{ name: 'Beranda', path: '/' }, ...breadcrumb];
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: trails.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: c.name,
+    item: `${site}${c.path}`
+  }))
+};
+
 const faq = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -25,6 +66,11 @@ const faq = {
       "@type": "Question",
       name: "Bagaimana cara konsultasi program fatloss di Reverse Gym?",
       acceptedAnswer: { "@type": "Answer", text: "Konsultasi via WhatsApp 0813-7000-780 (tombol WA dari bio IG resmi). Diawali InBody check lalu disusun personalized program oleh coach dan physio." }
+    },
+    {
+      "@type": "Question",
+      name: "Apakah harga di situs ini sudah pasti?",
+      acceptedAnswer: { "@type": "Answer", text: "Harga gym di situs ini berlabel estimasi. Tarif akhir dan paket bundling Gym + Elixir dikonfirmasi via WhatsApp sebelum pembayaran." }
     }
   ]
 };
@@ -34,9 +80,10 @@ const faq = {
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;700&family=Geist+Mono:wght@500&display=swap" media="print" onload="this.media='all'" />
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;700&family=Geist+Mono:wght@500&display=swap" /></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Italiana&display=swap" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Italiana&display=swap" /></noscript>
 <meta name="generator" content={Astro.generator} />
+<meta name="theme-color" content="#201C18" />
 <link rel="canonical" href={canonicalUrl} />
 <title>{title}</title>
 <meta name="title" content={title} />
@@ -49,21 +96,12 @@ const faq = {
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />
-<meta property="og:image:alt" content="Training center Reverse Gym dan interior Elixir Coffee Jambi" />
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={canonicalUrl} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={ogImage} />
-<script type="application/ld+json" set:html={JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "ExerciseGym",
-  name: "Reverse Gym & Elixir Coffee",
-  url: "https://reverse-elixir-jambi.pages.dev",
-  image: ogImage,
-  description: description,
-  exerciseType: ["Physiotherapy", "Nutrition"],
-  address: { "@type": "PostalAddress", streetAddress: "Jl. Nias, Kota Baru", addressLocality: "Kota Jambi", addressRegion: "Jambi", addressCountry: "ID" },
-  sameAs: ["https://www.instagram.com/reverse.fitnessindonesia", "https://www.instagram.com/elixir.coffeexperience"]
-})} />
+<meta property="og:image:alt" content="Rak dumbel training center Reverse Gym dan interior Elixir Coffee Jambi" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalUrl} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
 <script type="application/ld+json" set:html={JSON.stringify(faq)} />

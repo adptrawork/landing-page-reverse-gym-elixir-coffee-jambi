@@ -1,40 +1,117 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
 import { business, programs, waLink } from '../data/business';
-const heroCta = waLink(`Halo ${business.name}, saya mau konsultasi program.`);
+
+const waProgram = waLink('Halo Reverse Gym, saya mau tanya program yang cocok untuk saya.');
+const waJadwal = waLink('Halo Reverse Gym, saya mau tanya jadwal sesi dan kelas.');
+
+const jam = [
+  { k: 'Elixir Coffee — weekday', v: '06.00–22.00', b: 'Terverifikasi IG' },
+  { k: 'Elixir Coffee — weekend', v: '06.00–23.00', b: 'Terverifikasi IG' },
+  { k: 'InBody check', v: 'Jadwal via WA', b: 'Terverifikasi IG' },
+  { k: 'Physio / recovery', v: 'Jadwal via WA', b: 'Terverifikasi IG' },
+  { k: 'Personalized program', v: 'Setelah asesmen', b: 'Terverifikasi IG' },
+];
 ---
-<!-- Ref: Unbounce fitness — head (hook) + content + CTA -->
-<BaseLayout title="Semua program & jadwal — Reverse Gym Jambi" description="REVERSE Medical & Family Gym — Recovery • Performance • Longevity, Fatloss Specialist,   // Personalized program by experts" canonicalPath="/Program" image={business.ogImage}>
-  <section class="bg-stone-900 text-white" aria-labelledby="subhead">
-    <div class="max-w-7xl mx-auto px-4 pt-14 pb-12 md:pt-20 md:pb-16">
-      <nav class="font-mono-num text-xs uppercase tracking-[0.18em] text-white/60" aria-label="Breadcrumb"><a href="/" class="hover:text-white">Beranda</a> / Program & kelas</nav>
-      <h1 id="subhead" class="mt-3 max-w-[20ch] text-3xl md:text-5xl font-black uppercase tracking-tighter">Semua program & jadwal</h1>
-      <p class="mt-3 max-w-[60ch] text-base text-white/75">Jadwal lengkap semua program latihan — pilih yang cocok dengan level & waktumu.</p>
-      <a href={heroCta} class="mt-6 inline-flex min-h-[48px] items-center rounded-full bg-teal-800 px-7 text-sm font-black uppercase tracking-wide text-white transition hover:opacity-90">Konsultasi Fatloss</a>
+<!-- Ref: duality editorial dark earthy — program zig-zag 2 kolom + daftar jam ber-rule -->
+<BaseLayout
+  title="Program & Jadwal — Reverse Gym & Elixir Coffee Jambi"
+  description="Enam program Reverse Gym & Elixir Coffee Jambi: personalized program, InBody check, fatloss, physio, kopi Elixir, dan pendamping latihan. Jadwal via WA."
+  canonicalPath="/program"
+  image={business.ogImage}
+  breadcrumb={[{ name: 'Program', path: '/program' }]}
+>
+
+  <!-- Hero editorial split -->
+  <section class="min-h-[70dvh] border-b b-rule" aria-labelledby="hero">
+    <div class="mx-auto grid max-w-[80rem] grid-cols-1 items-center gap-12 px-5 pb-14 pt-12 md:grid-cols-12 md:gap-14 md:px-8 md:py-20">
+      <div class="md:col-span-6">
+        <nav class="eyebrow" aria-label="Breadcrumb"><a href="/" class="hover:text-fg">Beranda</a> <span aria-hidden="true">/</span> Program</nav>
+        <h1 id="hero" class="font-display rise mt-4 text-[clamp(2.2rem,6.4vw,4.2rem)] leading-[1.03]" style="--i:1">
+          Program &amp; jadwal
+        </h1>
+        <p class="rise mt-6 max-w-[48ch] text-base text-soft" style="--i:2">
+          Enam entri dari data resmi: empat layanan sisi gym dan dua kategori sisi kafe.
+          Setiap label menunjukkan sumbernya, dan tarif dikonfirmasi lewat WhatsApp.
+        </p>
+        <div class="rise mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2" style="--i:3">
+          <a href={waProgram} class="btn btn-solid" target="_blank" rel="noopener">Tanya program</a>
+          <a href="#jadwal" class="btn btn-ghost">Lihat jam &amp; akses</a>
+        </div>
+      </div>
+      <figure class="frame rise aspect-[3/4] rounded-sm border b-rule md:col-span-6" style="--i:2">
+        <img src="/images/reverse-3.jpg" alt="Deretan treadmill area kardio Reverse Gym Jambi" width="800" height="555" loading="eager" fetchpriority="high" decoding="async" />
+      </figure>
     </div>
   </section>
 
-  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-label="Daftar program">
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {programs.map((p) => (
-        <article class="flex flex-col overflow-hidden rounded-3xl border border-stone-200 bg-white">
-          <img src={p.img} alt={p.alt} width="800" height="600" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
-          <div class="flex flex-1 flex-col p-6">
-            <p class="font-mono-num text-[11px] font-bold uppercase tracking-[0.18em] text-teal-800">{p.badge}</p>
-            <h2 class="mt-2 text-lg font-extrabold tracking-tight">{p.name}</h2>
-            <p class="mt-2 text-sm leading-relaxed text-stone-600">{p.desc}</p>
-            <a href={heroCta} class="mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full border border-teal-800 px-5 text-sm font-bold uppercase tracking-wide text-teal-800 transition hover:bg-teal-800 hover:text-white">Coba Trial</a>
-          </div>
-        </article>
-      ))}
+  <!-- Daftar program: zig-zag -->
+  <section class="border-b b-rule py-14 md:py-24" aria-labelledby="daftar">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <SectionHead
+        id="daftar"
+        index="01"
+        eyebrow="Daftar program"
+        title="Enam entri, dua karakter"
+        lead="Label Terverifikasi berarti bersumber dari bio atau sorotan IG resmi. Label Estimasi berarti perlu konfirmasi sebelum dipakai sebagai acuan."
+      />
+      <div class="mt-14 grid gap-14 md:gap-20">
+        {programs.map((p, i) => (
+          <article class="zig">
+            <figure class:list={['frame aspect-[4/3] rounded-sm border b-rule', i % 2 === 1 && 'md:order-2']}>
+              <img src={p.img} alt={p.alt} width="800" height="600" loading="lazy" decoding="async" />
+            </figure>
+            <div class:list={[i % 2 === 1 && 'md:order-1']}>
+              <p class="eyebrow flex items-center gap-3">
+                <span class="num text-accent">{String(i + 1).padStart(2, '0')}</span>
+                <span>{p.badge}</span>
+              </p>
+              <h3 class="font-display mt-3 text-[clamp(1.5rem,3vw,2.2rem)] leading-tight">{p.name}</h3>
+              <p class="mt-3 max-w-[48ch] text-sm text-soft">{p.desc}</p>
+              <a href={waProgram} class="btn btn-ghost mt-6" target="_blank" rel="noopener">Tanya layanan ini</a>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
-    <p class="mt-3 text-xs text-stone-400">Foto konteks — ganti foto asli lokasi.</p>
   </section>
-  <section class="max-w-7xl mx-auto px-4 pb-12 md:pb-20" aria-label="Ajakan">
-    <div class="rounded-3xl bg-stone-900 p-8 text-white md:p-10">
-      <p class="text-2xl font-black uppercase tracking-tight">Masih bingung pilih program?</p>
-      <p class="mt-2 text-sm text-white/70">Tanya gratis — admin bantu pilihkan sesuai level & tujuanmu.</p>
-      <a href={heroCta} class="mt-5 inline-flex min-h-[48px] items-center rounded-full bg-white px-8 text-sm font-black uppercase tracking-wide text-stone-900">Konsultasi Fatloss</a>
+
+  <!-- Jam & kelas -->
+  <section id="jadwal" class="border-b b-rule py-14 md:py-24" aria-labelledby="jadwal-h">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <SectionHead
+        id="jadwal-h"
+        index="02"
+        eyebrow="Jam & akses"
+        title="Kapan saja bisa datang"
+        lead="Jam Elixir Coffee tercatat di IG resmi. Sesi gym, InBody, dan physio tidak dipublikasikan — konfirmasi dulu lewat WhatsApp."
+      />
+      <ul class="rowlist mt-12 border-t b-rule">
+        {jam.map((j) => (
+          <li class="grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-4 md:grid-cols-[1fr_10rem_9rem]">
+            <span class="text-sm">{j.k}</span>
+            <span class="num text-sm font-semibold text-accent md:text-right">{j.v}</span>
+            <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-soft md:text-right">{j.b}</span>
+          </li>
+        ))}
+      </ul>
+      <a href={waJadwal} class="btn btn-solid mt-10 w-full sm:w-auto" target="_blank" rel="noopener">Tanya jadwal sesi</a>
+    </div>
+  </section>
+
+  <!-- CTA akhir -->
+  <section class="py-14 md:py-24" aria-labelledby="cta">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <div class="grid grid-cols-1 gap-6 border-t b-rule pt-10 md:grid-cols-12">
+        <h2 id="cta" class="font-display text-[clamp(1.6rem,4vw,2.6rem)] leading-tight md:col-span-7">
+          Belum yakin pilih yang mana? Ceritakan tujuanmu.
+        </h2>
+        <div class="md:col-span-5">
+          <p class="text-sm text-soft">Admin akan membantu memetakan langkah pertama — termasuk apakah InBody check perlu lebih dulu.</p>
+          <a href={waProgram} class="btn btn-solid mt-6 w-full sm:w-auto" target="_blank" rel="noopener">Konsultasi via WhatsApp</a>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>

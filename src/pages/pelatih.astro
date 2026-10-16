@@ -1,38 +1,97 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
 import { business, coaches, waLink } from '../data/business';
-const heroCta = waLink(`Halo ${business.name}, saya mau konsultasi program.`);
+
+const waCoach = waLink('Halo Reverse Gym, saya mau tanya soal pendampingan coach dan physio.');
+
+// Visual aksi / non-wajah — tidak ada foto orang yang diklaim sebagai pelatih.
+const visuals = [
+  { img: '/images/reverse-3.jpg', alt: 'Deretan treadmill area kardio, konteks program fatloss dan performance' },
+  { img: '/images/reverse-4.jpg', alt: 'Terapi kaki klinis berpakaian dengan resistance band, konteks layanan pemulihan' },
+  { img: '/images/reverse-1.jpg', alt: 'Rak dumbel di area beban training center' },
+];
+
+const peran = coaches.map((c, i) => ({ ...c, ...visuals[i % visuals.length] }));
 ---
-<!-- Ref: Unbounce fitness — head (hook) + content + CTA -->
-<BaseLayout title="Kenalan dengan coach — Reverse Gym Jambi" description="REVERSE Medical & Family Gym — Recovery • Performance • Longevity, Fatloss Specialist,   // Personalized program by experts" canonicalPath="/Pelatih" image={business.ogImage}>
-  <section class="bg-stone-900 text-white" aria-labelledby="subhead">
-    <div class="max-w-7xl mx-auto px-4 pt-14 pb-12 md:pt-20 md:pb-16">
-      <nav class="font-mono-num text-xs uppercase tracking-[0.18em] text-white/60" aria-label="Breadcrumb"><a href="/" class="hover:text-white">Beranda</a> / Pelatih & instruktur</nav>
-      <h1 id="subhead" class="mt-3 max-w-[20ch] text-3xl md:text-5xl font-black uppercase tracking-tighter">Kenalan dengan coach</h1>
-      <p class="mt-3 max-w-[60ch] text-base text-white/75">Coach & instruktur yang mendampingi tiap sesi latihanmu.</p>
-      <a href={heroCta} class="mt-6 inline-flex min-h-[48px] items-center rounded-full bg-teal-800 px-7 text-sm font-black uppercase tracking-wide text-white transition hover:opacity-90">Konsultasi Fatloss</a>
+<!-- Ref: duality editorial dark earthy — peran pendamping, visual non-wajah + credential teks -->
+<BaseLayout
+  title="Peran Pelatih & Pendamping — Reverse Gym & Elixir Jambi"
+  description="Peran coach, physio, dan training center di Reverse Gym Jambi: pendampingan fatloss, pemulihan, dan program personal. Tanpa foto wajah yang diklaim."
+  canonicalPath="/pelatih"
+  image={business.ogImage}
+  breadcrumb={[{ name: 'Pelatih', path: '/pelatih' }]}
+>
+
+  <section class="min-h-[70dvh] border-b b-rule" aria-labelledby="hero">
+    <div class="mx-auto grid max-w-[80rem] grid-cols-1 items-center gap-12 px-5 pb-14 pt-12 md:grid-cols-12 md:gap-14 md:px-8 md:py-20">
+      <div class="md:col-span-6">
+        <nav class="eyebrow" aria-label="Breadcrumb"><a href="/" class="hover:text-fg">Beranda</a> <span aria-hidden="true">/</span> Pelatih</nav>
+        <h1 id="hero" class="font-display rise mt-4 text-[clamp(2.2rem,6.4vw,4.2rem)] leading-[1.03]" style="--i:1">
+          Peran pendamping, bukan wajah yang dipajang
+        </h1>
+        <p class="rise mt-6 max-w-[48ch] text-base text-soft" style="--i:2">
+          Data resmi yang tersedia hanya menyebut perannya, bukan nama per orang. Karena itu halaman ini
+          memakai visual aksi dan credential teks — tidak ada foto yang diklaim sebagai pelatih tertentu.
+        </p>
+        <a href={waCoach} class="btn btn-solid rise mt-8 w-full sm:w-auto" style="--i:3" target="_blank" rel="noopener">Tanya soal pendampingan</a>
+      </div>
+      <figure class="frame rise aspect-[4/3] rounded-sm border b-rule md:col-span-6" style="--i:2">
+        <img src="/images/reverse-4.jpg" alt="Sesi terapi kaki klinis dengan resistance band, konteks layanan pemulihan Reverse Gym Jambi" width="800" height="534" loading="eager" fetchpriority="high" decoding="async" />
+      </figure>
     </div>
   </section>
 
-  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-label="Daftar pelatih">
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {coaches.map((c) => (
-        <article class="rounded-3xl border border-stone-200 bg-white p-6">
-          <div class="grid h-14 w-14 place-items-center rounded-2xl bg-teal-800 font-mono-num text-lg font-bold text-white" aria-hidden="true">{c.role.slice(0, 1)}</div>
-          <p class="mt-4 font-mono-num text-[11px] font-bold uppercase tracking-[0.18em] text-teal-800">{c.badge}</p>
-          <h2 class="mt-1 text-lg font-extrabold tracking-tight">{c.role}</h2>
-          <p class="mt-2 text-sm leading-relaxed text-stone-600">{c.desc}</p>
-          <a href={heroCta} class="mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full border border-teal-800 px-5 text-sm font-bold uppercase tracking-wide text-teal-800 transition hover:bg-teal-800 hover:text-white">Tanya Coach</a>
-        </article>
-      ))}
+  <section class="border-b b-rule py-14 md:py-24" aria-labelledby="peran">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <SectionHead
+        id="peran"
+        index="01"
+        eyebrow="Tiga peran"
+        title="Siapa yang mendampingi sesimu"
+        lead="Setiap baris memuat label sumber datanya. Nama, sertifikasi, dan jadwal per orang dikonfirmasi lewat WhatsApp resmi."
+      />
+
+      <ul class="rowlist mt-12 border-t b-rule">
+        {peran.map((c, i) => (
+          <li class="grid grid-cols-1 gap-6 py-8 md:grid-cols-[16rem_1fr] md:gap-10">
+            <figure class="frame aspect-[4/3] rounded-sm border b-rule">
+              <img src={c.img} alt={c.alt} width="800" height="600" loading="lazy" decoding="async" />
+            </figure>
+            <div>
+              <p class="eyebrow flex items-center gap-3">
+                <span class="num text-accent">{String(i + 1).padStart(2, '0')}</span>
+                <span>{c.badge}</span>
+              </p>
+              <h3 class="font-display mt-3 text-[clamp(1.4rem,2.8vw,2rem)] leading-tight">{c.role}</h3>
+              <p class="mt-3 max-w-[52ch] text-sm text-soft">{c.desc}</p>
+              <p class="mt-5 text-[13px] text-sage">
+                Credential: {i === 0 ? 'fatloss specialist &amp; personalized program (klaim bio IG)' : i === 1 ? 'physio / recovery (sorotan IG)' : 'coach &amp; training center (sorotan IG)'}
+              </p>
+              <a href={waCoach} class="btn btn-ghost mt-6" target="_blank" rel="noopener">Tanya via WhatsApp</a>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <p class="mt-8 max-w-[70ch] text-sm text-soft">
+        Catatan kejujuran data: nama coach aktual tidak dipublikasikan pada sumber yang tersedia, jadi tidak
+        dicantumkan di sini. Konfirmasi nama, sertifikasi, dan jadwal lewat kontak resmi sebelum datang.
+      </p>
     </div>
-    <p class="mt-4 text-xs text-stone-500">Nama coach aktual dapat berubah — konfirmasi via kontak resmi sebelum datang.</p>
   </section>
-  <section class="max-w-7xl mx-auto px-4 pb-12 md:pb-20" aria-label="Ajakan">
-    <div class="rounded-3xl bg-stone-900 p-8 text-white md:p-10">
-      <p class="text-2xl font-black uppercase tracking-tight">Mau didampingi dari nol?</p>
-      <p class="mt-2 text-sm text-white/70">Ceritakan tujuanmu — coach bantu susun langkah pertama.</p>
-      <a href={heroCta} class="mt-5 inline-flex min-h-[48px] items-center rounded-full bg-white px-8 text-sm font-black uppercase tracking-wide text-stone-900">Konsultasi Fatloss</a>
+
+  <section class="py-14 md:py-24" aria-labelledby="cta">
+    <div class="mx-auto max-w-[80rem] px-5 md:px-8">
+      <div class="grid grid-cols-1 gap-6 border-t b-rule pt-10 md:grid-cols-12">
+        <h2 id="cta" class="font-display text-[clamp(1.6rem,4vw,2.6rem)] leading-tight md:col-span-7">
+          Ada keluhan nyeri atau riwayat cedera? Sebutkan sejak awal.
+        </h2>
+        <div class="md:col-span-5">
+          <p class="text-sm text-soft">Tim memakai informasi itu untuk menyusun langkah latihan yang aman, sesuai pilar recovery.</p>
+          <a href={waCoach} class="btn btn-solid mt-6 w-full sm:w-auto" target="_blank" rel="noopener">Konsultasi via WhatsApp</a>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>

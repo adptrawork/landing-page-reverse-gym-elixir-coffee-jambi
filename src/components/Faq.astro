@@ -1,15 +1,17 @@
 ---
 const { items = [] } = Astro.props as { items: { q: string; a: string }[] };
 ---
-<!-- Ref: Unbounce fitness — risk-reversal / objection handling -->
-<div class="divide-y divide-stone-200 rounded-3xl border border-stone-200 bg-white">
-  {items.map((f) => (
-    <details class="group px-6 py-4 [&_summary::-webkit-details-marker]:hidden">
-      <summary class="flex min-h-[48px] cursor-pointer list-none items-center justify-between gap-4 font-semibold">
+<!-- Ref: duality editorial — FAQ sebagai list ber-rule, bukan kartu -->
+<div class="rowlist border-t b-rule">
+  {items.map((f, i) => (
+    <details class="group" style={`--i:${i}`}>
+      <summary class="flex min-h-[52px] cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold [&::-webkit-details-marker]:hidden">
         <span>{f.q}</span>
-        <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-stone-300 transition group-open:rotate-45" aria-hidden="true">+</span>
+        <svg class="h-4 w-4 shrink-0 text-accent transition-transform duration-300 group-open:rotate-45" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M8 2.5v11M2.5 8h11" stroke-linecap="round" />
+        </svg>
       </summary>
-      <p class="pb-2 text-sm leading-relaxed text-stone-600">{f.a}</p>
+      <p class="max-w-[68ch] pb-5 text-sm text-soft">{f.a}</p>
     </details>
   ))}
 </div>

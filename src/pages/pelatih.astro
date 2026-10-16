@@ -7,9 +7,9 @@ const waCoach = waLink('Halo Reverse Gym, saya mau tanya soal pendampingan coach
 
 // Visual aksi / non-wajah — tidak ada foto orang yang diklaim sebagai pelatih.
 const visuals = [
-  { img: '/images/reverse-3.jpg', alt: 'Deretan treadmill area kardio, konteks program fatloss dan performance' },
-  { img: '/images/reverse-4.jpg', alt: 'Terapi kaki klinis berpakaian dengan resistance band, konteks layanan pemulihan' },
-  { img: '/images/reverse-1.jpg', alt: 'Rak dumbel di area beban training center' },
+  { img: '/images/reverse-3.webp', alt: 'Deretan treadmill area kardio, konteks program fatloss dan performance' },
+  { img: '/images/reverse-4.webp', alt: 'Terapi kaki klinis berpakaian dengan resistance band, konteks layanan pemulihan' },
+  { img: '/images/reverse-1.webp', alt: 'Rak dumbel di area beban training center' },
 ];
 
 const peran = coaches.map((c, i) => ({ ...c, ...visuals[i % visuals.length] }));
@@ -37,7 +37,7 @@ const peran = coaches.map((c, i) => ({ ...c, ...visuals[i % visuals.length] }));
         <a href={waCoach} class="btn btn-solid rise mt-8 w-full sm:w-auto" style="--i:3" target="_blank" rel="noopener">Tanya soal pendampingan</a>
       </div>
       <figure class="frame rise aspect-[4/3] rounded-sm border b-rule md:col-span-6" style="--i:2">
-        <img src="/images/reverse-4.jpg" alt="Sesi terapi kaki klinis dengan resistance band, konteks layanan pemulihan Reverse Gym Jambi" width="800" height="534" loading="eager" fetchpriority="high" decoding="async" />
+        <img src="/images/reverse-4.webp" alt="Sesi terapi kaki klinis dengan resistance band, konteks layanan pemulihan Reverse Gym Jambi" width="800" height="534" loading="eager" fetchpriority="high" decoding="async" />
       </figure>
     </div>
   </section>

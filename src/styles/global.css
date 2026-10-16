@@ -9,7 +9,7 @@
   --bg: #201C18;            /* off-black hangat */
   --bg-2: #53473D;          /* permukaan earthy */
   --fg: #F4EEE2;            /* cream */
-  --fg-soft: rgba(244, 238, 226, .66);   /* 7.07:1 di atas --bg */
+  --fg-soft: rgba(244, 238, 226, .75);   /* 7.07:1 di atas --bg */
   --fg-soft-2: rgba(244, 238, 226, .85); /* 6.16:1 di atas --bg-2 */
   --sage: #B4B99B;          /* tint/rule — 8.34:1 di atas --bg */
   --accent: #B7754D;        /* SATU accent terracotta — 4.57:1 di atas --bg */

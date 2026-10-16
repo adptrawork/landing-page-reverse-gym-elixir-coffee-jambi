@@ -21,7 +21,7 @@ export const business = {
   description:
     'Reverse Medical & Family Gym Jambi: fatloss specialist, InBody check, physio, personalized program. Satu lokasi dengan Elixir Coffee Jl Nias — konsultasi via WA 0813-7000-780.',
   canonicalPath: '/',
-  ogImage: '/images/reverse-1.jpg',
+  ogImage: '/images/reverse-1.webp',
 };
 
 export const waLink = (message: string) =>
@@ -32,42 +32,42 @@ export const programs = [
     name: 'Personalized Program by Experts',
     badge: 'Terverifikasi',
     desc: 'Program personal sesuai hasil asesmen — klaim bio IG resmi. Cocok fatloss & performance.',
-    img: '/images/reverse-1.jpg',
+    img: '/images/reverse-1.webp',
     alt: 'Area beban training center Reverse Gym Jambi',
   },
   {
     name: 'InBody Check',
     badge: 'Terverifikasi',
     desc: 'Highlight InBody di IG resmi — ukur komposisi tubuh sebelum program.',
-    img: '/images/reverse-2.jpg',
+    img: '/images/reverse-2.webp',
     alt: 'Asesmen komposisi tubuh InBody di Reverse Gym Jambi',
   },
   {
     name: 'Fatloss Specialist',
     badge: 'Terverifikasi',
     desc: 'Spesialis fatloss — klaim bio IG resmi. Target & progres dipantau coach.',
-    img: '/images/reverse-3.jpg',
+    img: '/images/reverse-3.webp',
     alt: 'Deretan treadmill area kardio untuk program fatloss Reverse Gym Jambi',
   },
   {
     name: 'Recovery: Physio & Pemulihan',
     badge: 'Terverifikasi',
     desc: 'Highlight Physio + pilar Recovery di bio IG. Detail layanan via WA.',
-    img: '/images/reverse-4.jpg',
+    img: '/images/reverse-4.webp',
     alt: 'Sesi terapi physio untuk pemulihan member Reverse Gym Jambi',
   },
   {
     name: 'Elixir Coffee — Kopi & Nongkrong Sehat',
     badge: 'Terverifikasi',
     desc: 'Weekday 06.00–22.00, weekend 06.00–23.00. Tersedia di GrabFood.',
-    img: '/images/reverse-5.jpg',
+    img: '/images/reverse-5.webp',
     alt: 'Interior Elixir Coffee Kota Baru Jambi',
   },
   {
     name: 'Protein Bar & Makan Sehat',
     badge: 'Estimasi',
     desc: 'Kopi + opsi makan pendamping latihan. Menu pasti cek IG Elixir/GrabFood.',
-    img: '/images/reverse-6.jpg',
+    img: '/images/reverse-6.webp',
     alt: 'Kopi susu dan minuman protein Elixir Coffee Jambi',
   },
 ];

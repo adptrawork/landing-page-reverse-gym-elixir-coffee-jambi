@@ -7,7 +7,7 @@ interface Props {
   image?: string;
   breadcrumb?: Crumb[];
 }
-const { title, description, canonicalUrl, image = '/images/reverse-1.jpg', breadcrumb = [] } = Astro.props;
+const { title, description, canonicalUrl, image = '/images/reverse-1.webp', breadcrumb = [] } = Astro.props;
 const site = (Astro.site?.toString() ?? 'https://landing-page-reverse-gym-elixir-coffee-jambi.adi-putra-work1.workers.dev').replace(/\/$/, '');
 const ogImage = new URL(image, Astro.site ?? Astro.url).toString();
 

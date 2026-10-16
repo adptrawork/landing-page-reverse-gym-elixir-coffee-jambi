@@ -1,39 +1,40 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { business, programs, waLink } from '../data/business';
-const gymOnly = programs.slice(0, 4);
+const heroCta = waLink(`Halo ${business.name}, saya mau konsultasi program.`);
 ---
-<BaseLayout title="Program Reverse Gym Jambi — InBody, Fatloss & Physio" description="Program Reverse Gym: InBody check, fatloss specialist, personalized program, physio recovery. Klaim terverifikasi IG @reverse.fitnessindonesia — konsultasi via WA." canonicalPath="/program">
-  <section class="max-w-7xl mx-auto px-4 py-12">
-    <p class="font-mono-num text-[11px] tracking-[0.2em] uppercase text-teal-800">Program gym</p>
-    <h1 class="mt-2 text-4xl md:text-6xl tracking-tighter leading-none font-bold max-w-[20ch]">Ukur dulu, baru latihan</h1>
-    <p class="mt-3 text-base text-stone-600 max-w-[65ch]">Label <strong>Terverifikasi</strong> = klaim bio/highlight IG resmi.</p>
-    <div class="mt-10 space-y-5">
-      {gymOnly.map((p, i) => (
-        <article class={`stack-card rounded-[2.5rem] border overflow-hidden ${i % 2 === 0 ? 'bg-white border-stone-200/70' : 'bg-teal-800 text-stone-50 border-teal-800'}`} style={`top:${88 + i * 14}px`}>
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-0">
-            <img src={p.img} alt={p.alt} width="800" height="500" loading="lazy" class="md:col-span-5 w-full aspect-[16/10] object-cover" />
-            <div class="md:col-span-7 p-7 md:p-9">
-              <p class={`font-mono-num text-xs ${i % 2 === 0 ? 'text-teal-800' : 'text-teal-200'}`}>0{i + 1} — {p.badge}</p>
-              <h2 class="mt-1 font-bold text-xl tracking-tight">{p.name}</h2>
-              <p class={`mt-2 text-base ${i % 2 === 0 ? 'text-stone-600' : 'text-stone-200/85'}`}>{p.desc}</p>
-              <a href={waLink(`Halo ${business.name}, saya mau tanya program ${p.name}.`)} class={`mt-4 inline-block px-5 py-2.5 rounded-full text-sm font-medium active:scale-[0.98] ${i % 2 === 0 ? 'bg-stone-900 text-white' : 'bg-stone-50 text-teal-900'}`}>Tanya via WA</a>
-            </div>
+<!-- Ref: Unbounce fitness — head (hook) + content + CTA -->
+<BaseLayout title="Semua program & jadwal — Reverse Gym Jambi" description="REVERSE Medical & Family Gym — Recovery • Performance • Longevity, Fatloss Specialist,   // Personalized program by experts" canonicalPath="/Program" image={business.ogImage}>
+  <section class="bg-stone-900 text-white" aria-labelledby="subhead">
+    <div class="max-w-7xl mx-auto px-4 pt-14 pb-12 md:pt-20 md:pb-16">
+      <nav class="font-mono-num text-xs uppercase tracking-[0.18em] text-white/60" aria-label="Breadcrumb"><a href="/" class="hover:text-white">Beranda</a> / Program & kelas</nav>
+      <h1 id="subhead" class="mt-3 max-w-[20ch] text-3xl md:text-5xl font-black uppercase tracking-tighter">Semua program & jadwal</h1>
+      <p class="mt-3 max-w-[60ch] text-base text-white/75">Jadwal lengkap semua program latihan — pilih yang cocok dengan level & waktumu.</p>
+      <a href={heroCta} class="mt-6 inline-flex min-h-[48px] items-center rounded-full bg-teal-800 px-7 text-sm font-black uppercase tracking-wide text-white transition hover:opacity-90">Konsultasi Fatloss</a>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-label="Daftar program">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {programs.map((p) => (
+        <article class="flex flex-col overflow-hidden rounded-3xl border border-stone-200 bg-white">
+          <img src={p.img} alt={p.alt} width="800" height="600" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
+          <div class="flex flex-1 flex-col p-6">
+            <p class="font-mono-num text-[11px] font-bold uppercase tracking-[0.18em] text-teal-800">{p.badge}</p>
+            <h2 class="mt-2 text-lg font-extrabold tracking-tight">{p.name}</h2>
+            <p class="mt-2 text-sm leading-relaxed text-stone-600">{p.desc}</p>
+            <a href={heroCta} class="mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full border border-teal-800 px-5 text-sm font-bold uppercase tracking-wide text-teal-800 transition hover:bg-teal-800 hover:text-white">Coba Trial</a>
           </div>
         </article>
       ))}
     </div>
+    <p class="mt-3 text-xs text-stone-400">Foto konteks — ganti foto asli lokasi.</p>
   </section>
-  <section class="bg-stone-200/40 border-y border-stone-200" aria-label="Sisi kafe">
-    <div class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-      <div class="md:col-span-7">
-        <p class="font-mono-num text-[11px] tracking-[0.2em] uppercase text-stone-500">Elixir Coffee</p>
-        <h2 class="mt-2 text-3xl tracking-tighter font-bold">Sisi kafe: kopi &amp; nongkrong sehat</h2>
-        <p class="mt-2 text-base text-stone-600 max-w-[65ch]">Weekday 06.00–22.00, weekend 06.00–23.00. Tersedia di GrabFood — {business.address}.</p>
-      </div>
-      <div class="md:col-span-5">
-        <img src="/images/reverse-5.jpg" alt="Interior Elixir Coffee Kota Baru Jambi" width="800" height="600" loading="lazy" class="w-full aspect-[4/3] object-cover rounded-[2.5rem]" />
-      </div>
+  <section class="max-w-7xl mx-auto px-4 pb-12 md:pb-20" aria-label="Ajakan">
+    <div class="rounded-3xl bg-stone-900 p-8 text-white md:p-10">
+      <p class="text-2xl font-black uppercase tracking-tight">Masih bingung pilih program?</p>
+      <p class="mt-2 text-sm text-white/70">Tanya gratis — admin bantu pilihkan sesuai level & tujuanmu.</p>
+      <a href={heroCta} class="mt-5 inline-flex min-h-[48px] items-center rounded-full bg-white px-8 text-sm font-black uppercase tracking-wide text-stone-900">Konsultasi Fatloss</a>
     </div>
   </section>
 </BaseLayout>

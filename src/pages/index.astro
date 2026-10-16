@@ -1,134 +1,207 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { business, programs, prices, waLink } from '../data/business';
-const heroCta = waLink(`Halo ${business.name}, saya mau konsultasi program fatloss.`);
-const gymPrograms = programs.slice(0, 4);
-const beans = [
-  { name: 'Espresso & Kopi Susu', desc: 'Menu inti Elixir — opsi less sugar pendamping defisit kalori. Varian pasti cek IG Elixir / GrabFood.', tag: 'FAVORIT' },
-  { name: 'Kopi Hitam Manual Brew', desc: 'Tanpa gula, pra-latihan yang bersih. Tanya biji yang sedang diseduh ke barista.', tag: 'PRE-WORKOUT' },
-  { name: 'Minuman Non-Kopi', desc: 'Opsi untuk yang sensitif kafein atau datang bersama keluarga. Menu pasti cek GrabFood.', tag: 'KELUARGA' },
-  { name: 'Pendamping Protein', desc: 'Makanan pendamping latihan — ketersediaan harian tanya langsung di kafe.', tag: 'RECOVERY' },
+import StatsStrip from '../components/StatsStrip.astro';
+import ClassCard from '../components/ClassCard.astro';
+import CoachCard from '../components/CoachCard.astro';
+import PriceCompare from '../components/PriceCompare.astro';
+import TrialForm from '../components/TrialForm.astro';
+import Faq from '../components/Faq.astro';
+import MapFacade from '../components/MapFacade.astro';
+import { business, prices, waLink } from '../data/business';
+const heroCta = waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`);
+const faqs = [
+    { q: 'Apa itu InBody check?', a: 'Ukur komposisi tubuh (lemak, otot, air) sebagai dasar program — sesuai highlight InBody di IG resmi. Tarif cek via WA.' },
+    { q: 'Apakah ada physio?', a: 'Ada — highlight Physio di IG resmi. Untuk keluhan cedera/nyeri, konsultasi dulu via WA 0813-7000-780.' },
+    { q: 'Elixir Coffee satu lokasi?', a: 'Ya — Jl. Nias Kota Baru (samping SMP Ahmad Dahlan). Weekday 06.00–22.00, weekend 06.00–23.00, tersedia di GrabFood.' },
+    { q: 'Pemula obesitas bisa ikut?', a: 'Justru itu spesialisnya (fatloss). Program personal sesuai hasil asesmen, bukan kelas massal.' },
+    { q: 'Harga di web ini pasti?', a: 'Harga gym bersifat estimasi; paket fatloss & bundling konfirmasi via WA sebelum bayar.' }
 ];
+const statsItems = '2,2rb~pengikut IG terverifikasi|3~pilar recovery–performance–longevity|5+~layanan specialist*|17 jam~Elixir buka tiap weekday'.split('|').map((s) => ({ value: s.split('~')[0], label: s.split('~')[1] }));
 ---
-<BaseLayout title="Reverse Gym Jambi — Medical Family Gym + Elixir Coffee Kota Baru" description="Reverse Medical & Family Gym Jambi: fatloss specialist, InBody check, physio, personalized program. Satu lokasi dengan Elixir Coffee Jl Nias — konsultasi via WA 0813-7000-780." canonicalPath="/" image={business.ogImage}>
-  <!-- INTRO -->
-  <section class="max-w-7xl mx-auto px-4 pt-12 pb-6">
-    <p class="scan inline-flex items-center gap-2 font-mono-num text-[11px] tracking-[0.2em] uppercase text-teal-800 border border-teal-800/25 rounded-full px-4 py-1.5 bg-teal-800/[0.05]">
-      {business.followers}
-    </p>
-    <h1 class="scan d1 mt-5 max-w-[20ch] text-4xl md:text-6xl tracking-tighter leading-[0.95] font-bold">Gym berbasis sains, kopi sesudahnya</h1>
-    <p class="scan d2 mt-5 text-base text-stone-600 leading-relaxed max-w-[65ch]">Medical &amp; family gym: fatloss specialist, program personal, InBody, physio — satu lokasi dengan Elixir Coffee (GrabFood, buka sampai 22.00/23.00). Gulir: panel gym dan kafe bergerak berlawanan.</p>
-    <div class="scan d3 mt-7 flex flex-wrap gap-3">
-      <a href={heroCta} class="bg-teal-800 text-white px-7 py-3.5 rounded-full font-medium transition-all duration-300 hover:bg-teal-900 active:scale-[0.98]" style="transition-timing-function:cubic-bezier(0.16,1,0.3,1)">Konsultasi Fatloss</a>
-      <a href="/program" class="border border-stone-300 px-7 py-3.5 rounded-full font-medium hover:border-teal-800 hover:text-teal-800 active:scale-[0.98]">Lihat Program</a>
+<!-- Ref: Unbounce fitness — hero → problem → solution → proof → offer → risk-reversal → CTA -->
+<!-- Ref: MuffinGroup — hero kuat + program Upper Body Blast dsb + CTA trial tiap segmen + foto member/alat/instruktur aksi -->
+<!-- Ref: NYSC — 1 warna pop teal-800 + font treatment beda (mono angka/label) -->
+<BaseLayout title={business.title} description={business.description} canonicalPath="/" image={business.ogImage}>
+  <!-- 01 HERO -->
+  <section class="relative w-full overflow-hidden bg-stone-900 text-white" aria-labelledby="hero">
+    <img src="/images/reverse-1.jpg" alt="Area beban training center Reverse Gym Jambi" width="800" height="533" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 h-full w-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/70 to-stone-900/25" aria-hidden="true"></div>
+    <div class="relative max-w-7xl mx-auto px-4 pt-20 pb-32 md:pt-28 md:pb-44">
+      <p class="rise d1 inline-flex items-center gap-2 rounded-full border border-white/30 bg-stone-900/60 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-white/90">MEDICAL GYM &bull; Jambi</p>
+      <h1 id="hero" class="rise d2 mt-5 max-w-[16ch] text-4xl md:text-6xl font-black uppercase leading-[0.95] tracking-tighter">Fatloss terukur, bukan tebakan</h1>
+      <p class="rise d3 mt-5 max-w-[52ch] text-base leading-relaxed text-white/80">Personalized program by experts, InBody check, pendampingan physio — satu lokasi dengan Elixir Coffee.</p>
+      <div class="rise d3 mt-8 flex flex-wrap gap-3">
+        <a href={heroCta} class="inline-flex min-h-[48px] items-center rounded-full bg-teal-800 px-8 font-black uppercase tracking-wide text-sm text-white transition hover:opacity-90 active:scale-[0.98]">Konsultasi Fatloss</a>
+        <a href="/harga" class="inline-flex min-h-[48px] items-center rounded-full border border-white/50 px-8 font-bold uppercase tracking-wide text-sm hover:bg-white hover:text-stone-900 active:scale-[0.98]">Lihat Harga</a>
+      </div>
+      <p class="rise d4 mt-6 font-mono-num text-xs uppercase tracking-[0.18em] text-white/60">Program unggulan: Personalized Fatloss Program</p>
     </div>
   </section>
 
-  <!-- SPLIT-SCREEN-SCROLL: gym vs Elixir -->
-  <section class="max-w-7xl mx-auto px-4 py-8" aria-label="Dua sisi Reverse">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 split-scroll">
-      <div class="split-panel panel-gym rounded-[2.5rem] overflow-hidden bg-teal-900 text-stone-50">
-        <img src="/images/reverse-1.jpg" alt="Area beban training center Reverse Gym Jambi" width="800" height="1000" loading="eager" fetchpriority="high" class="absolute inset-0 w-full h-full object-cover opacity-90" />
-        <div class="absolute inset-0 bg-gradient-to-t from-teal-950 via-teal-950/55 to-transparent" aria-hidden="true"></div>
-        <div class="relative h-full flex flex-col justify-end p-8 md:p-10">
-          <p class="font-mono-num text-[11px] tracking-[0.2em] text-teal-200">01 — TRAINING CENTER</p>
-          <p class="mt-2 text-2xl md:text-3xl font-bold tracking-tighter">Science-based training &amp; wellness</p>
-          <p class="mt-2 text-sm text-stone-200/85 max-w-[45ch]">Personalized program by experts — klaim IG resmi terverifikasi.</p>
-        </div>
+  <!-- 02 STATS STRIP -->
+  <StatsStrip items={statsItems} note="*Estimasi — detail layanan konfirmasi via WA 0813-7000-780." accent="teal-800" />
+
+  <!-- MARQUEE -->
+  <div class="marquee bg-stone-900 text-white border-t border-white/10 py-3" aria-label="Sorotan layanan">
+    <div class="marquee-track font-black uppercase tracking-widest text-sm">
+      <div class="flex shrink-0" aria-hidden="false">
+              {<span class="px-6 py-1 whitespace-nowrap">InBody Check <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Fatloss Specialist <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Personalized Program <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Physio <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Training Center <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Elixir Coffee <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Recovery <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Longevity <span class="ml-6 opacity-50">/</span></span>}
       </div>
-      <div class="split-panel panel-cafe rounded-[2.5rem] overflow-hidden bg-stone-800 text-stone-100 md:mt-24">
-        <img src="/images/reverse-5.jpg" alt="Interior Elixir Coffee Kota Baru Jambi" width="800" height="1000" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-90" />
-        <div class="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/55 to-transparent" aria-hidden="true"></div>
-        <div class="relative h-full flex flex-col justify-end p-8 md:p-10">
-          <p class="font-mono-num text-[11px] tracking-[0.2em] text-stone-300">02 — ELIXIR COFFEE</p>
-          <p class="mt-2 text-2xl md:text-3xl font-bold tracking-tighter">Habis latihan, ngopi di Elixir</p>
-          <p class="mt-2 text-sm text-stone-200/85 max-w-[45ch]">Jl. Nias Kota Baru — weekday 06.00–22.00, weekend sampai 23.00. Tersedia di GrabFood.</p>
-        </div>
+      <div class="flex shrink-0" aria-hidden="true">
+              {<span class="px-6 py-1 whitespace-nowrap">InBody Check <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Fatloss Specialist <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Personalized Program <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Physio <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Training Center <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Elixir Coffee <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Recovery <span class="ml-6 opacity-50">/</span></span>}
+              {<span class="px-6 py-1 whitespace-nowrap">Longevity <span class="ml-6 opacity-50">/</span></span>}
       </div>
+    </div>
+  </div>
+
+  <!-- PROBLEM -->
+  <!-- Ref: Unbounce fitness — problem agitation -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="masalah">
+    <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Masalah member</p>
+    <h2 id="masalah" class="mt-2 max-w-[20ch] text-3xl md:text-4xl font-black uppercase tracking-tighter">Kenapa resolusi gym gagal?</h2>
+    <div class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div class="rounded-3xl border border-stone-200 bg-white p-6"><p class="font-extrabold">Diet gagal terus</p><p class="mt-1 text-sm text-stone-600">Program fatloss specialist berbasis data InBody — progres dipantau, bukan kira-kira.</p></div>
+        <div class="rounded-3xl border border-stone-200 bg-white p-6"><p class="font-extrabold">Cedera kambuh saat latihan</p><p class="mt-1 text-sm text-stone-600">Pilar recovery + physio bantu latihan aman sesuai kondisi.</p></div>
+        <div class="rounded-3xl border border-stone-200 bg-white p-6"><p class="font-extrabold">Gym terasa intimidating</p><p class="mt-1 text-sm text-stone-600">Medical & family gym — personal, tenang, satu lokasi dengan kafe.</p></div>
     </div>
   </section>
 
-  <!-- STICKY-STACK PROGRAM -->
-  <section class="max-w-7xl mx-auto px-4 py-12" aria-labelledby="program">
+  <!-- 03 PROGRAM & KELAS -->
+  <!-- Ref: MuffinGroup — kartu jadwal nama/hari/jam/level + CTA trial tiap segmen -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="program">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
       <div class="md:col-span-8">
-        <p class="font-mono-num text-[11px] tracking-[0.2em] uppercase text-teal-800">Alur program</p>
-        <h2 id="program" class="mt-2 text-3xl md:text-4xl tracking-tighter leading-none font-bold">Bertumpuk rapi: ukur, latih, pulih</h2>
+        <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Program &amp; kelas</p>
+        <h2 id="program" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Jadwal yang bikin konsisten</h2>
       </div>
-      <p class="md:col-span-4 text-base text-stone-600"><a class="underline underline-offset-4 font-medium" href="/program">Semua program</a> • <a class="underline underline-offset-4 font-medium" href="/harga">Harga</a></p>
+      <p class="md:col-span-4 text-base text-stone-600">Label Terverifikasi = klaim IG resmi. <a class="underline underline-offset-4 font-semibold" href="/program">Semua program</a></p>
     </div>
-    <div class="mt-8 space-y-5">
-      {gymPrograms.map((p, i) => (
-        <article class={`stack-card scan d${i + 1} rounded-[2.5rem] border overflow-hidden shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] ${i % 2 === 0 ? 'bg-white border-stone-200/70' : 'bg-teal-800 text-stone-50 border-teal-800'}`} style={`top:${88 + i * 14}px`}>
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-0">
-            <img src={p.img} alt={p.alt} width="800" height="500" loading="lazy" class="md:col-span-5 w-full aspect-[16/10] object-cover" />
-            <div class="md:col-span-7 p-7 md:p-9">
-              <p class={`font-mono-num text-xs ${i % 2 === 0 ? 'text-teal-800' : 'text-teal-200'}`}>0{i + 1} — {p.badge}</p>
-              <h3 class="mt-1 font-bold text-xl tracking-tight">{p.name}</h3>
-              <p class={`mt-2 text-base ${i % 2 === 0 ? 'text-stone-600' : 'text-stone-200/85'}`}>{p.desc}</p>
-            </div>
-          </div>
+    <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ClassCard name="Personalized Program by Experts" day="Senin–Sabtu" time="By appointment" level="Semua level" img="/images/reverse-1.jpg" alt="Area beban training center Reverse Gym Jambi" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
+        <ClassCard name="InBody Check" day="Senin–Sabtu" time="15 menit" level="Semua level" img="/images/reverse-2.jpg" alt="Asesmen komposisi tubuh InBody di Reverse Gym Jambi" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
+        <ClassCard name="Fatloss Specialist" day="12 minggu" time="Terjadwal" level="Pemula–menengah" img="/images/reverse-3.jpg" alt="Coach Reverse Gym mendampingi program fatloss member" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
+        <ClassCard name="Recovery: Physio & Pemulihan" day="By appointment" time="45 menit" level="Semua level" img="/images/reverse-4.jpg" alt="Area pemulihan dan physio Reverse Gym Jambi" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
+        <ClassCard name="Elixir Coffee Hangout" day="Weekday" time="06.00–22.00" level="Semua level" img="/images/reverse-5.jpg" alt="Interior Elixir Coffee Kota Baru Jambi" badge="Terverifikasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
+        <ClassCard name="Protein Bar & Recovery Meal" day="Weekend" time="06.00–23.00" level="Semua level" img="/images/reverse-6.jpg" alt="Kopi susu dan minuman protein Elixir Coffee Jambi" badge="Estimasi" cta={{ href: waLink(`Halo ${business.name}, saya mau konsultasi program fatloss + InBody check.`), label: 'Coba Trial' }} />
+    </div>
+    <p class="mt-3 text-xs text-stone-400">Foto konteks — ganti foto asli lokasi.</p>
+    <p class="mt-4 text-sm text-stone-500 md:hidden" aria-hidden="true">↓ Geser / gulir untuk lihat semua jadwal</p>
+  </section>
+
+  <!-- 04 PELATIH -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="pelatih">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
+      <div class="md:col-span-8">
+        <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Pelatih</p>
+        <h2 id="pelatih" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Didampingi, bukan dilepas</h2>
+      </div>
+      <p class="md:col-span-4 text-base text-stone-600"><a class="underline underline-offset-4 font-semibold" href="/pelatih">Semua pelatih</a></p>
+    </div>
+    <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <CoachCard role="Coach Fatloss & Performance" spec="Fatloss specialist" credential="Bio IG terverifikasi" desc="Fatloss Specialist + personalized program — klaim IG resmi terverifikasi." badge="Terverifikasi (klaim bio)" />
+        <CoachCard role="Physio / Recovery" spec="Recovery & nyeri gerak" credential="Highlight IG" desc="Highlight Physio di IG resmi. Keluhan cedera/nyeri konsultasi dulu via WA." badge="Terverifikasi (highlight)" />
+        <CoachCard role="Coach Training Center" spec="Strength & conditioning" credential="Training center" desc="Highlight Coach & Training center di IG resmi." badge="Terverifikasi (highlight)" />
+    </div>
+  </section>
+
+  <!-- 05 HARGA -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="harga">
+    <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Harga</p>
+    <h2 id="harga" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Pilih paketmu</h2>
+    <div class="mt-8 grid grid-cols-1 gap-5 md:hidden">
+      {prices.slice(0, 3).map((p, i) => (
+        <article class:list={["relative rounded-3xl border p-6", i === 2 ? "border-teal-800 bg-stone-900 text-white" : "border-stone-200 bg-white"]}>
+          {i === 2 && <p class="absolute -top-3 left-6 rounded-full bg-teal-800 px-3 py-1 text-[11px] font-black uppercase tracking-widest text-white">Terpopuler</p>}
+          <p class="font-mono-num text-[11px] font-bold uppercase tracking-[0.18em]">{p.badge}</p>
+          <h3 class="mt-1 font-extrabold">{p.name}</h3>
+          <p class="mt-1 font-mono-num text-2xl font-bold">{p.price}</p>
+          <p class="mt-1 text-sm opacity-80">{p.desc}</p>
         </article>
       ))}
     </div>
+    <div class="mt-8 hidden md:block">
+      <PriceCompare accent="teal-800" note="Harga estimasi — paket fatloss & bundling Gym+Elixir konfirmasi via WA 0813-7000-780." items={prices.map((p, i) => ({ ...p, featured: i === 2, href: typeof heroCta === 'string' ? heroCta : '/kontak' }))} />
+    </div>
+    <p class="mt-4 text-sm text-stone-600 md:hidden">Harga estimasi — paket fatloss & bundling Gym+Elixir konfirmasi via WA 0813-7000-780. <a class="underline underline-offset-4 font-semibold" href="/harga">Semua harga</a></p>
   </section>
 
-  <!-- KAFE ACCORDION (stone neutrals only) -->
-  <section class="bg-stone-200/40 border-y border-stone-200" aria-labelledby="kafe">
-    <div class="max-w-7xl mx-auto px-4 py-14 grid grid-cols-1 md:grid-cols-12 gap-8">
-      <div class="md:col-span-4">
-        <p class="font-mono-num text-[11px] tracking-[0.2em] uppercase text-stone-500">Elixir Coffee</p>
-        <h2 id="kafe" class="mt-2 text-3xl md:text-4xl tracking-tighter leading-none font-bold">Menu kafe, dibuka satu-satu</h2>
-        <p class="mt-3 text-base text-stone-600">Menu pasti berubah — cek IG @elixir.coffeexperience atau GrabFood sebelum memesan.</p>
-        <img src="/images/reverse-6.jpg" alt="Kopi susu dan minuman protein Elixir Coffee Jambi" width="600" height="450" loading="lazy" class="mt-6 w-full aspect-[4/3] object-cover rounded-[2.5rem]" />
+  <!-- 06 TRIAL -->
+  <!-- Ref: Unbounce fitness — offer + risk-reversal -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="trial">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <div class="md:col-span-5">
+        <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Trial / konsultasi</p>
+        <h2 id="trial" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Coba dulu, cocok baru lanjut</h2>
+        <p class="mt-3 text-base text-stone-600">Isi form 30 detik — otomatis lanjut ke kontak resmi. Tanpa komitmen, tanpa spam.</p>
+        <ul class="mt-4 space-y-2 text-sm text-stone-600">
+          <li>✓ Slot trial dicek manual admin</li>
+          <li>✓ Boleh tanya harga &amp; jadwal dulu</li>
+          <li>✓ Pemula dibantu mulai dari nol</li>
+        </ul>
       </div>
-      <div class="md:col-span-8 beans">
-        {beans.map((b) => (
-          <details class="group py-2">
-            <summary class="flex items-center gap-4 py-4">
-              <span class="bean-plus font-mono-num text-xl text-stone-400" aria-hidden="true">+</span>
-              <span class="flex-1 font-bold text-lg tracking-tight">{b.name}</span>
-              <span class="font-mono-num text-[10px] tracking-widest border border-stone-400/60 rounded-full px-3 py-1 text-stone-500">{b.tag}</span>
-            </summary>
-            <div class="bean-body pb-6 pl-9 pr-2 text-base text-stone-600 max-w-[65ch]">{b.desc}</div>
-          </details>
-        ))}
+      <div class="md:col-span-7">
+        <TrialForm action={`https://wa.me/${business.phone}`} gymName={business.name} kind="wa" accent="teal-800" />
       </div>
     </div>
   </section>
 
-  <!-- HARGA RINGKAS -->
-  <section class="max-w-7xl mx-auto px-4 py-12" aria-labelledby="harga">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-      <div class="md:col-span-4">
-        <p class="font-mono-num text-[11px] tracking-[0.2em] uppercase text-teal-800">Harga</p>
-        <h2 id="harga" class="mt-2 text-3xl md:text-4xl tracking-tighter leading-none font-bold">Mulai dari asesmen</h2>
-        <p class="mt-3 text-base text-stone-600">Angka estimasi — konsultasi dulu via WA. <a class="underline underline-offset-4 font-medium text-stone-900" href="/harga">Rincian harga</a></p>
+  <!-- 07 PROOF -->
+  <!-- Ref: MuffinGroup — foto member asli + alat + instruktur aksi; Unbounce — proof -->
+  <section class="py-12 md:py-20" aria-labelledby="bukti">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">Bukti</p>
+      <h2 id="bukti" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Kata mereka yang latihan</h2>
+      <div class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <figure class="rounded-3xl border border-stone-200 bg-white p-6"><div class="font-mono-num text-xs text-stone-400">Estimasi — ilustratif</div><blockquote class="mt-2 text-sm leading-relaxed text-stone-700">“InBody check di awal bikin target jelas. Coach pantau progres tiap sesi, turun 6 kg.”</blockquote><figcaption class="mt-3 text-sm font-bold">Andra <span class="font-normal text-stone-500">— Paket fatloss 12 minggu</span></figcaption></figure>
+        <figure class="rounded-3xl border border-stone-200 bg-white p-6"><div class="font-mono-num text-xs text-stone-400">Estimasi — ilustratif</div><blockquote class="mt-2 text-sm leading-relaxed text-stone-700">“Habis latihan langsung ngopi sehat di Elixir. Tempatnya bersih, coach-nya detail.”</blockquote><figcaption class="mt-3 text-sm font-bold">Maya <span class="font-normal text-stone-500">— Member + Elixir regular</span></figcaption></figure>
+        <figure class="rounded-3xl border border-stone-200 bg-white p-6"><div class="font-mono-num text-xs text-stone-400">Estimasi — ilustratif</div><blockquote class="mt-2 text-sm leading-relaxed text-stone-700">“Sakit pinggang membaik setelah sesi recovery. Disarankan latihan lanjutan yang aman.”</blockquote><figcaption class="mt-3 text-sm font-bold">Riko <span class="font-normal text-stone-500">— Recovery physio</span></figcaption></figure>
       </div>
-      <ol class="md:col-span-8 bg-white border border-stone-200/70 rounded-[2.5rem] divide-y divide-stone-200/80 px-7 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)]">
-        {prices.slice(0, 4).map((p, i) => (
-          <li class="flex items-baseline gap-4 py-5">
-            <span class="font-mono-num text-xs text-teal-800 w-7 shrink-0">0{i + 1}</span>
-            <p class="flex-1 font-semibold tracking-tight">{p.name}</p>
-            <span class="font-mono-num font-semibold text-sm whitespace-nowrap">{p.price}</span>
-          </li>
-        ))}
-      </ol>
     </div>
-  </section>
-
-  <!-- LOKASI -->
-  <section class="max-w-7xl mx-auto px-4 py-12" aria-labelledby="lokasi">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+    <div class="mt-8">
+      <p class="max-w-7xl mx-auto px-4 font-mono-num text-xs uppercase tracking-[0.18em] text-stone-500">Galeri fasilitas — geser →</p>
+      <div class="snap-rail no-scrollbar mt-4 flex gap-4 overflow-x-auto px-4 md:px-[max(1rem,calc((100vw-80rem)/2+1rem))] pb-2">
+          <figure class="snap-item shrink-0 w-[80vw] sm:w-[360px] overflow-hidden rounded-3xl border border-stone-200 bg-white"><img src="/images/reverse-1.jpg" alt="Area beban training center Reverse Gym Jambi" width="800" height="600" loading="lazy" class="aspect-[4/3] w-full object-cover" /><figcaption class="px-4 py-3 text-xs text-stone-500">Foto konteks — ganti foto asli lokasi.</figcaption></figure>
+          <figure class="snap-item shrink-0 w-[80vw] sm:w-[360px] overflow-hidden rounded-3xl border border-stone-200 bg-white"><img src="/images/reverse-2.jpg" alt="Asesmen komposisi tubuh InBody di Reverse Gym Jambi" width="800" height="600" loading="lazy" class="aspect-[4/3] w-full object-cover" /><figcaption class="px-4 py-3 text-xs text-stone-500">Foto konteks — ganti foto asli lokasi.</figcaption></figure>
+          <figure class="snap-item shrink-0 w-[80vw] sm:w-[360px] overflow-hidden rounded-3xl border border-stone-200 bg-white"><img src="/images/reverse-4.jpg" alt="Area pemulihan dan physio Reverse Gym Jambi" width="800" height="600" loading="lazy" class="aspect-[4/3] w-full object-cover" /><figcaption class="px-4 py-3 text-xs text-stone-500">Foto konteks — ganti foto asli lokasi.</figcaption></figure>
+          <figure class="snap-item shrink-0 w-[80vw] sm:w-[360px] overflow-hidden rounded-3xl border border-stone-200 bg-white"><img src="/images/reverse-5.jpg" alt="Interior Elixir Coffee Kota Baru Jambi" width="800" height="600" loading="lazy" class="aspect-[4/3] w-full object-cover" /><figcaption class="px-4 py-3 text-xs text-stone-500">Foto konteks — ganti foto asli lokasi.</figcaption></figure>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 mt-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
       <div class="md:col-span-4">
-        <p class="font-mono-num text-[11px] tracking-[0.2em] uppercase text-teal-800">Lokasi</p>
-        <h2 id="lokasi" class="mt-2 text-3xl md:text-4xl tracking-tighter leading-none font-bold">Gym + kafe satu lokasi</h2>
-        <p class="mt-3 text-base text-stone-600 max-w-[65ch]">{business.address}. {business.hours}. <a class="underline underline-offset-4 text-stone-900 font-medium" href="/kontak">Hubungi &amp; rute</a></p>
+        <h3 class="font-extrabold text-lg">Lokasi &amp; jam</h3>
+        <p class="mt-2 text-sm text-stone-600">{business.address}.<br />{business.hours}.</p>
+        <a href="/kontak" class="mt-4 inline-flex min-h-[48px] items-center rounded-full border border-stone-300 px-6 text-sm font-bold uppercase tracking-wide">Rute &amp; kontak</a>
       </div>
       <div class="md:col-span-8">
-        <div class="rounded-[2.5rem] overflow-hidden border border-stone-200/70 aspect-video bg-stone-100">
-          <iframe title="Peta Reverse Gym Jambi" src={business.mapsEmbed} loading="lazy" class="w-full h-full"></iframe>
-        </div>
+        <MapFacade src={business.mapsEmbed} title="Peta Reverse Jambi" mapsUrl={business.mapsUrl} />
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 FAQ + FINAL CTA -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20" aria-labelledby="faq">
+    <p class="font-mono-num text-xs font-bold uppercase tracking-[0.2em] text-teal-800">FAQ</p>
+    <h2 id="faq" class="mt-2 text-3xl md:text-4xl font-black uppercase tracking-tighter">Masih ragu? Wajar.</h2>
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <div class="md:col-span-7"><Faq items={faqs} /></div>
+      <div class={`md:col-span-5 rounded-3xl bg-stone-900 p-8 text-white`}>
+        <p class="font-mono-num text-xs uppercase tracking-[0.18em] text-white/60">Final CTA — tanpa risiko</p>
+        <p class="mt-2 text-2xl font-black uppercase tracking-tight">Slot trial minggu ini terbatas</p>
+        <p class="mt-2 text-sm text-white/70">Amankan slotmu sekarang — gratis tanya, tanpa komitmen.</p>
+        <a href={heroCta} class="mt-6 inline-flex min-h-[48px] items-center rounded-full bg-white px-8 text-sm font-black uppercase tracking-wide text-stone-900 transition hover:opacity-90 active:scale-[0.98]">Konsultasi Fatloss</a>
       </div>
     </div>
   </section>

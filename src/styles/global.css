@@ -1,57 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;600&display=swap');
+/* Fonts dimuat via <link> di BaseHead (preconnect + media=print onload) — tanpa @import render-blocking. */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --ease-clinical: cubic-bezier(0.16, 1, 0.3, 1);
-}
+:root { --ease-snap: cubic-bezier(0.16, 1, 0.3, 1); }
 
 html { scroll-behavior: smooth; }
-
 body {
   font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
-  background: #fafaf9;
-  color: #1c1917;
   -webkit-font-smoothing: antialiased;
 }
+.font-mono-num { font-family: 'JetBrains Mono', 'Geist Mono', ui-monospace, monospace; }
 
-.font-mono-num { font-family: 'Geist Mono', ui-monospace, monospace; }
-
-/* Staggered clinical entrance */
-.scan { opacity: 0; animation: scan-in 0.75s var(--ease-clinical) forwards; }
-.d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.13s; }
-.d3 { animation-delay: 0.2s; } .d4 { animation-delay: 0.27s; }
-.d5 { animation-delay: 0.34s; } .d6 { animation-delay: 0.41s; }
-@keyframes scan-in {
-  from { opacity: 0; transform: translateY(22px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Entrance */
+.rise { opacity: 0; animation: rise-in 0.7s var(--ease-snap) forwards; }
+.d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.12s; } .d3 { animation-delay: 0.19s; }
+.d4 { animation-delay: 0.26s; } .d5 { animation-delay: 0.33s; } .d6 { animation-delay: 0.4s; }
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Split-screen-scroll: two sticky panels sliding opposite */
-.split-scroll { position: relative; }
-.split-panel { position: sticky; top: 0; height: 100svh; max-height: 640px; overflow: hidden; }
-@media (max-width: 767px) {
-  .split-panel { position: relative; height: auto; max-height: none; }
+/* Marquee: overflow-hidden wajib */
+.marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee-track { display: flex; width: max-content; animation: slide-x 24s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes slide-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* Snap rail + scroll-padding + hint */
+.snap-rail { scroll-snap-type: x mandatory; scroll-padding-inline: 1rem; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+.snap-rail > * { scroll-snap-align: start; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* Skeleton shimmer untuk blok harga */
+.skeleton { position: relative; overflow: hidden; }
+.skeleton::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.55) 50%, transparent 80%);
+  animation: shimmer 1.6s linear infinite;
 }
-.panel-gym img { transform: scale(1.12); }
-.panel-cafe img { transform: scale(1.12) translateY(-4%); }
+@keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
 
-/* Sticky-stack cards */
-.stack-card { position: sticky; top: 88px; transition: transform 0.5s var(--ease-clinical), box-shadow 0.5s var(--ease-clinical); }
-.stack-card:hover { transform: translateY(-4px); }
+/* Hamburger CSS-only (checkbox peer) */
+.nav-toggle { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.burger span { display: block; width: 22px; height: 2px; background: currentColor; border-radius: 2px; transition: transform 0.3s var(--ease-snap), opacity 0.2s; }
+.burger span + span { margin-top: 5px; }
+.nav-toggle:checked + nav .burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle:checked + nav .burger span:nth-child(2) { opacity: 0; }
+.nav-toggle:checked + nav .burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu { display: none; }
+.nav-toggle:checked + nav .mobile-menu { display: block; }
+.nav-toggle:focus-visible + nav .burger { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 6px; }
 
-/* Cafe accordion — CSS only via details */
-.beans details { border-bottom: 1px solid rgba(120, 113, 108, 0.35); }
-.beans summary { cursor: pointer; list-style: none; transition: color 0.35s var(--ease-clinical); }
-.beans summary::-webkit-details-marker { display: none; }
-.beans summary:hover { color: #57534e; }
-.beans details[open] .bean-plus { transform: rotate(45deg); }
-.bean-plus { display: inline-block; transition: transform 0.4s var(--ease-clinical); }
-.beans .bean-body { animation: scan-in 0.5s var(--ease-clinical); }
+a, button { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid #0f766e; outline-offset: 3px; border-radius: 6px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .scan, .beans .bean-body { animation: none; opacity: 1; }
+  .rise { animation: none; opacity: 1; }
+  .marquee-track, .skeleton::after { animation: none; }
   html { scroll-behavior: auto; }
 }

@@ -3,47 +3,53 @@ import BaseHead from '../components/BaseHead.astro';
 import '../styles/global.css';
 interface Props { title: string; description: string; canonicalPath?: string; image?: string; }
 const { title, description, canonicalPath = '/', image } = Astro.props;
-const site = (Astro.site?.toString() ?? 'https://reverse-gym-elixir-coffee-jambi.pages.dev').replace(/\/$/, '');
+const site = (Astro.site?.toString() ?? 'https://reverse-elixir-jambi.pages.dev').replace(/\/$/, '');
 const canonicalUrl = `${site}${canonicalPath}`;
 import { business, waLink } from '../data/business';
-const cta = waLink(`Halo ${business.name}, saya mau tanya program fatloss.`);
+const cta = waLink(`Halo ${business.name}, saya mau konsultasi program fatloss.`);
 ---
 <!doctype html>
 <html lang="id">
 <head>
   <BaseHead title={title} description={description} canonicalUrl={canonicalUrl} image={image} />
 </head>
-<body class="bg-[#f9fafb] text-zinc-950 antialiased">
-  <header class="sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+<body class="bg-stone-50 text-stone-900 antialiased">
+  <div class="border-b border-teal-800/15 bg-teal-800/[0.05]">
+    <p class="max-w-7xl mx-auto px-4 py-2 font-mono-num text-[11px] tracking-widest uppercase text-teal-800">Recovery — Performance — Longevity &bull; Terverifikasi IG</p>
+  </div>
+  <header class="sticky top-0 z-40 bg-stone-50/85 backdrop-blur-xl border-b border-stone-200/70">
     <nav class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
-      <a href="/" class="font-bold tracking-tight">{business.name}</a>
-      <div class="hidden md:flex gap-6 text-sm text-zinc-600">
-        <a href="/" class="hover:text-zinc-950 transition">Beranda</a>
-        <a href="/program" class="hover:text-zinc-950 transition">Program</a>
-        <a href="/pelatih" class="hover:text-zinc-950 transition">Pelatih</a>
-        <a href="/harga" class="hover:text-zinc-950 transition">Harga</a>
-        <a href="/kontak" class="hover:text-zinc-950 transition">Kontak</a>
+      <a href="/" class="flex items-center gap-2.5">
+        <span class="grid place-items-center w-9 h-9 rounded-full bg-teal-800 text-stone-50 font-bold" aria-hidden="true">R</span>
+        <span class="font-bold tracking-tight leading-none">Reverse<small class="block font-mono-num text-[10px] font-medium tracking-[0.18em] text-stone-500">MEDICAL GYM + ELIXIR</small></span>
+      </a>
+      <div class="hidden md:flex gap-6 text-sm text-stone-600">
+        <a href="/" class="hover:text-teal-800 transition">Beranda</a>
+        <a href="/program" class="hover:text-teal-800 transition">Program</a>
+        <a href="/pelatih" class="hover:text-teal-800 transition">Pelatih</a>
+        <a href="/harga" class="hover:text-teal-800 transition">Harga</a>
+        <a href="/kontak" class="hover:text-teal-800 transition">Kontak</a>
       </div>
-      <a href={cta} class="bg-amber-600 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]" style="transition-timing-function:cubic-bezier(0.16,1,0.3,1)">Konsultasi WA</a>
+      <a href={cta} class="bg-teal-800 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-teal-900 active:scale-[0.98]" style="transition-timing-function:cubic-bezier(0.16,1,0.3,1)">Konsultasi Fatloss</a>
     </nav>
   </header>
   <main><slot /></main>
-  <footer id="kontak" class="mt-20 border-t border-zinc-200 bg-white">
-    <div class="max-w-7xl mx-auto px-4 py-12 grid gap-8 md:grid-cols-12">
+  <footer class="mt-20 border-t border-stone-200 bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-12 grid gap-8 grid-cols-1 md:grid-cols-12">
       <div class="md:col-span-7">
-        <p class="font-bold tracking-tight text-lg">{business.name}</p>
-        <p class="mt-2 text-base text-gray-600 leading-relaxed max-w-[65ch]">{business.address} — {business.hours}</p>
-        <p class="mt-2 text-sm text-zinc-500">Program gym & menu kafe via WA/IG. Rute via Google Maps.</p>
+        <p class="font-bold tracking-tight text-lg">Reverse Gym &amp; Elixir Coffee</p>
+        <p class="mt-1 font-mono-num text-xs tracking-widest uppercase text-teal-800">Recovery • Performance • Longevity</p>
+        <p class="mt-2 text-base text-stone-600 leading-relaxed max-w-[65ch]">{business.address} — {business.hours}</p>
       </div>
       <div class="md:col-span-5">
         <p class="font-semibold text-sm">Hubungi</p>
         <div class="mt-3 flex flex-col gap-2 text-sm">
-          <a href={cta} class="underline underline-offset-4">WhatsApp gym 0813-7000-780</a>
-          <a href={business.instagram} class="underline underline-offset-4">IG gym (terverifikasi)</a>
-          <a href={business.elixirInstagram} class="underline underline-offset-4">IG Elixir Coffee</a>
+          <a href={`https://wa.me/${business.phone}`} class="underline underline-offset-4">WA 0813-7000-780</a>
+          <a href={business.instagram} class="underline underline-offset-4">IG @reverse.fitnessindonesia</a>
+          <a href={business.elixirInstagram} class="underline underline-offset-4">IG @elixir.coffeexperience</a>
           <a href={business.mapsUrl} class="underline underline-offset-4">Google Maps — rute ke lokasi</a>
         </div>
-        <p class="mt-6 text-xs text-zinc-400">© 2026 {business.name} — Kota Jambi.</p>
+        <p class="mt-6 text-xs text-stone-400">© 2026 Reverse Gym &amp; Elixir Coffee — Kota Jambi.</p>
       </div>
     </div>
   </footer>

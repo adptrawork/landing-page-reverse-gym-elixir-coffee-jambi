@@ -7,6 +7,27 @@ interface Props {
 }
 const { title, description, canonicalUrl, image = '/images/reverse-1.jpg' } = Astro.props;
 const ogImage = new URL(image, Astro.site ?? Astro.url).toString();
+const faq = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Apa itu Reverse Medical & Family Gym di Jambi?",
+      acceptedAnswer: { "@type": "Answer", text: "Reverse adalah medical & family gym dengan tiga pilar Recovery, Performance, dan Longevity. Layanan terverifikasi dari IG resmi @reverse.fitnessindonesia meliputi InBody check, fatloss specialist, personalized program, dan physio." }
+    },
+    {
+      "@type": "Question",
+      name: "Di mana lokasi Elixir Coffee dan jam bukanya?",
+      acceptedAnswer: { "@type": "Answer", text: "Elixir Coffee di Jl. Nias, Kota Baru, Jambi. Buka weekday 06.00–22.00 dan weekend 06.00–23.00, tersedia juga di GrabFood." }
+    },
+    {
+      "@type": "Question",
+      name: "Bagaimana cara konsultasi program fatloss di Reverse Gym?",
+      acceptedAnswer: { "@type": "Answer", text: "Konsultasi via WhatsApp 0813-7000-780 (tombol WA dari bio IG resmi). Diawali InBody check lalu disusun personalized program oleh coach dan physio." }
+    }
+  ]
+};
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -18,10 +39,13 @@ const ogImage = new URL(image, Astro.site ?? Astro.url).toString();
 <meta name="description" content={description} />
 <meta name="robots" content="index, follow" />
 <meta property="og:type" content="website" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="Reverse Gym & Elixir Coffee — Recovery, Performance, Longevity" />
 <meta property="og:url" content={canonicalUrl} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content="Training center Reverse Gym dan interior Elixir Coffee Jambi" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={canonicalUrl} />
 <meta property="twitter:title" content={title} />
@@ -30,11 +54,12 @@ const ogImage = new URL(image, Astro.site ?? Astro.url).toString();
 <script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org",
   "@type": "ExerciseGym",
-  name: "Reverse Gym & Elixir Coffee Jambi",
-  url: "https://reverse-gym-elixir-coffee-jambi.pages.dev",
+  name: "Reverse Gym & Elixir Coffee",
+  url: "https://reverse-elixir-jambi.pages.dev",
   image: ogImage,
   description: description,
+  exerciseType: ["Physiotherapy", "Nutrition"],
   address: { "@type": "PostalAddress", streetAddress: "Jl. Nias, Kota Baru", addressLocality: "Kota Jambi", addressRegion: "Jambi", addressCountry: "ID" },
-  telephone: "+62-813-7000-780",
   sameAs: ["https://www.instagram.com/reverse.fitnessindonesia", "https://www.instagram.com/elixir.coffeexperience"]
 })} />
+<script type="application/ld+json" set:html={JSON.stringify(faq)} />

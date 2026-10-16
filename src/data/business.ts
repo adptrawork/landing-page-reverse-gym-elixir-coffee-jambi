@@ -17,9 +17,9 @@ export const business = {
   mapsEmbed: 'https://maps.google.com/maps?q=Reverse%20Gym%20Jambi&t=&z=15&ie=UTF8&iwloc=&output=embed',
   address: 'Jl. Nias, Kota Baru, Jambi (samping SMP Ahmad Dahlan — konfirmasi)',
   hours: 'Elixir: Weekday 06.00–22.00, Weekend 06.00–23.00 • Gym: konfirmasi via WA',
-  title: 'Reverse Gym & Elixir Coffee Jambi — Medical Family Gym + Kafe',
+  title: 'Reverse Gym Jambi — Medical Family Gym + Elixir Coffee Kota Baru',
   description:
-    'Reverse Medical & Family Gym Jambi: fatloss specialist, InBody, physio, program personal. + Elixir Coffee Jl Nias Kota Baru, tersedia di GrabFood. WA 0813-7000-780.',
+    'Reverse Medical & Family Gym Jambi: fatloss specialist, InBody check, physio, personalized program. Satu lokasi dengan Elixir Coffee Jl Nias — konsultasi via WA 0813-7000-780.',
   canonicalPath: '/',
   ogImage: '/images/reverse-1.jpg',
 };

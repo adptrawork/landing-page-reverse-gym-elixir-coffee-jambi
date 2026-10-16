@@ -1,31 +1,57 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-clinical: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif;
-  background: #f9fafb;
-  color: #09090b;
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  background: #fafaf9;
+  color: #1c1917;
   -webkit-font-smoothing: antialiased;
 }
 
-.font-mono-num { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.font-mono-num { font-family: 'Geist Mono', ui-monospace, monospace; }
 
-.reveal { animation: rise 0.7s var(--ease-premium) both; }
-@keyframes rise {
-  from { opacity: 0; transform: translateY(18px); }
+/* Staggered clinical entrance */
+.scan { opacity: 0; animation: scan-in 0.75s var(--ease-clinical) forwards; }
+.d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.13s; }
+.d3 { animation-delay: 0.2s; } .d4 { animation-delay: 0.27s; }
+.d5 { animation-delay: 0.34s; } .d6 { animation-delay: 0.41s; }
+@keyframes scan-in {
+  from { opacity: 0; transform: translateY(22px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Split-screen-scroll: two sticky panels sliding opposite */
+.split-scroll { position: relative; }
+.split-panel { position: sticky; top: 0; height: 100svh; max-height: 640px; overflow: hidden; }
+@media (max-width: 767px) {
+  .split-panel { position: relative; height: auto; max-height: none; }
+}
+.panel-gym img { transform: scale(1.12); }
+.panel-cafe img { transform: scale(1.12) translateY(-4%); }
+
+/* Sticky-stack cards */
+.stack-card { position: sticky; top: 88px; transition: transform 0.5s var(--ease-clinical), box-shadow 0.5s var(--ease-clinical); }
+.stack-card:hover { transform: translateY(-4px); }
+
+/* Cafe accordion — CSS only via details */
+.beans details { border-bottom: 1px solid rgba(120, 113, 108, 0.35); }
+.beans summary { cursor: pointer; list-style: none; transition: color 0.35s var(--ease-clinical); }
+.beans summary::-webkit-details-marker { display: none; }
+.beans summary:hover { color: #57534e; }
+.beans details[open] .bean-plus { transform: rotate(45deg); }
+.bean-plus { display: inline-block; transition: transform 0.4s var(--ease-clinical); }
+.beans .bean-body { animation: scan-in 0.5s var(--ease-clinical); }
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal { animation: none; }
+  .scan, .beans .bean-body { animation: none; opacity: 1; }
   html { scroll-behavior: auto; }
 }

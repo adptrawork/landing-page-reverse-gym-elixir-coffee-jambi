@@ -12,6 +12,10 @@ const waUmum = waLink('Halo Reverse Gym & Elixir Coffee, saya mau tanya keanggot
 const gymPrograms = programs.slice(0, 4);
 const cafeEntries = programs.slice(4, 6);
 
+// Hero duality: pilar dari bio IG resmi (gym) & jam Elixir (kafe) — data terverifikasi.
+const gymWords = ['Recovery', 'Performance', 'Longevity'];
+const cafeMeta = ['Weekday 06.00–22.00', 'Weekend 06.00–23.00', 'Dine-in & GrabFood'];
+
 const alur = [
   {
     n: '01',
@@ -53,47 +57,100 @@ const jam = [
   image={business.ogImage}
 >
 
-  <!-- 01 HERO — kolase asimetris, bukan hero center -->
-  <section class="relative min-h-[100dvh] border-b b-rule" aria-labelledby="hero">
-    <div class="mx-auto grid max-w-[80rem] grid-cols-1 items-center gap-12 px-5 pb-16 pt-12 md:grid-cols-12 md:gap-14 md:px-8 md:pb-24 md:pt-20">
-      <div class="md:col-span-5">
-        <p class="eyebrow rise" style="--i:0">Reverse Gym &times; Elixir Coffee &mdash; Jl. Nias, Kota Jambi</p>
-        <h1 id="hero" class="font-display rise mt-5 text-[clamp(2.4rem,7.2vw,4.6rem)] leading-[1.02]" style="--i:1">
-          Dua karakter, satu atap &mdash; latihan yang serius, kopi yang tenang.
+  <!-- Ref: duality split hero — gym (gelap, berat, grid weight-room) vs coffee bar (hangat, terang, motif cangkir/uap), garis seam + lencana melingkar berputar -->
+  <!-- 01 HERO — split dua karakter: kiri gym, kanan kopi -->
+  <section class="duality border-b b-rule" aria-labelledby="hero">
+    <!-- KIRI — sisi GYM: foto gelap + grid weight-room + tipografi berat -->
+    <div class="duality__gym">
+      <img class="duality__bg" src="/images/reverse-1.webp" alt="" width="800" height="533" fetchpriority="high" decoding="async" />
+      <div class="duality__scrim" aria-hidden="true"></div>
+
+      <div class="duality__pad">
+        <p class="eyebrow rise" style="--i:0">
+          <span class="num">01</span>
+          <span class="duality__tick" aria-hidden="true"></span>
+          Reverse &mdash; sisi gym
+        </p>
+        <h1 id="hero" class="duality__display rise mt-5" style="--i:1">
+          Latihan yang<br />serius.
         </h1>
-        <p class="rise mt-6 max-w-[46ch] text-base text-soft" style="--i:2">
-          Medical &amp; family gym dengan fatloss specialist, InBody check, dan pendampingan physio.
-          Di sebelahnya, Elixir Coffee untuk jeda setelah sesi.
+        <p class="duality__lead rise" style="--i:2">
+          Medical &amp; family gym: fatloss specialist, InBody check, physio, dan personalized
+          program by experts &mdash; disusun dari hasil asesmen, bukan resep massal.
         </p>
-        <div class="rise mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2" style="--i:3">
-          <a href={waGym} class="btn btn-solid" target="_blank" rel="noopener">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7v10M8 5v14M16 5v14M20 7v10M8 12h8" stroke-linecap="round"/></svg>
-            Mulai dari sisi gym
-          </a>
-          <a href="#kopi" class="btn btn-ghost">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 8h11v6a5 5 0 0 1-5 5H10a5 5 0 0 1-5-5V8ZM16 9h2.5a2.5 2.5 0 0 1 0 5H16M4 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Kenali sisi kopi
-          </a>
+        <div class="rise mt-8 flex flex-wrap gap-3" style="--i:3">
+          <a href={waGym} class="btn btn-solid" target="_blank" rel="noopener">Mulai dari sisi gym</a>
+          <a href="#kopi" class="btn btn-ghost">Kenali sisi kopi</a>
         </div>
-        <p class="rise mt-6 text-xs text-soft" style="--i:4">
-          Label <strong class="font-semibold text-sage">Terverifikasi</strong> berarti bersumber dari bio/highlight IG resmi.
-          Harga <strong class="font-semibold text-sage">Estimasi</strong> dikonfirmasi via WhatsApp sebelum membayar.
-        </p>
+        <ul class="rowlist duality__facts rise mt-10" style="--i:4" aria-label="Tiga pilar Reverse Gym">
+          {gymWords.map((w) => (
+            <li class="duality__fact">
+              <span class="duality__dot" aria-hidden="true"></span>
+              <span class="text-sm font-semibold uppercase tracking-[0.14em]">{w}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <!-- Kolase: 4:3 besar + 3:4 tinggi + 16:9 lebar -->
-      <div class="collage md:col-span-7" role="group" aria-label="Kolase suasana gym dan kafe">
-        <figure class="frame collage__main rise aspect-[4/3] rounded-sm border b-rule" style="--i:1">
-          <img src="/images/reverse-1.webp" alt="Rak dumbel di area beban training center Reverse Gym Jambi" width="800" height="533" loading="eager" fetchpriority="high" decoding="async" />
-        </figure>
-        <figure class="frame collage__tall rise aspect-[3/4] rounded-sm border b-rule" style="--i:2">
-          <img src="/images/reverse-6.webp" alt="Latte art kopi Elixir Coffee Jambi" width="720" height="1080" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="frame collage__wide rise aspect-[16/9] rounded-sm border b-rule" style="--i:3">
-          <img src="/images/reverse-3.webp" alt="Deretan treadmill area kardio Reverse Gym Jambi" width="800" height="555" loading="lazy" decoding="async" />
-        </figure>
+      <!-- Lencana melingkar di seam (dekoratif) -->
+      <div class="seam-badge" aria-hidden="true">
+        <svg class="seam-badge__ring" viewBox="0 0 100 100">
+          <defs>
+            <path id="seam-circle" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
+          </defs>
+          <text class="seam-badge__text">
+            <textPath href="#seam-circle">REVERSE GYM &#8226; ELIXIR COFFEE &#8226; JL. NIAS &#8226; KOTA JAMBI &#8226;</textPath>
+          </text>
+        </svg>
+        <span class="seam-badge__core">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M4 9v6M7.5 7v10M16.5 7v10M20 9v6M7.5 12h9" stroke-linecap="round" />
+          </svg>
+        </span>
       </div>
     </div>
+
+    <!-- KANAN — sisi KOPI: panel hangat terang + motif cangkir/uap -->
+    <div class="duality__coffee">
+      <svg class="duality__cup" viewBox="0 0 240 200" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+        <path d="M58 82h108v40a42 42 0 0 1-42 42h-24a42 42 0 0 1-42-42V82Z" stroke-linejoin="round" />
+        <path d="M166 94h12a22 22 0 0 1 0 44h-14" stroke-linecap="round" />
+        <path d="M92 58c0-12 8-12 8-26M118 58c0-12 8-12 8-26M144 58c0-12 8-12 8-26" stroke-linecap="round" />
+      </svg>
+
+      <div class="duality__pad">
+        <p class="eyebrow on-latte rise" style="--i:0">
+          <span class="num">02</span>
+          <span class="duality__tick on-latte" aria-hidden="true"></span>
+          Elixir &mdash; sisi kopi
+        </p>
+        <h2 class="duality__display duality__display--coffee rise mt-5" style="--i:1">
+          Kopi yang<br />tenang.
+        </h2>
+        <p class="duality__lead on-latte rise" style="--i:2">
+          Jeda setelah sesi: kopi, opsi makan sehat, dan tempat duduk yang tenang.
+          Dine-in atau pesan antar &mdash; tanpa pindah tempat dari training center.
+        </p>
+        <div class="rise mt-8 flex flex-wrap gap-3" style="--i:3">
+          <a href={waCoffee} class="btn btn-fg" target="_blank" rel="noopener">Tanya menu Elixir</a>
+          <a href={business.elixirInstagram} class="btn btn-line" target="_blank" rel="noopener">IG Elixir</a>
+        </div>
+        <ul class="rowlist duality__facts rise mt-10" style="--i:4" aria-label="Info Elixir Coffee">
+          {cafeMeta.map((m) => (
+            <li class="duality__fact">
+              <span class="duality__dot on-latte" aria-hidden="true"></span>
+              <span class="on-latte text-sm font-semibold uppercase tracking-[0.14em]">{m}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Catatan label data (bisnis) di bawah split -->
+    <p class="duality__note rise" style="--i:5">
+      Label <strong class="font-semibold text-sage">Terverifikasi</strong> berarti bersumber dari bio/highlight IG resmi.
+      Harga <strong class="font-semibold text-sage">Estimasi</strong> dikonfirmasi via WhatsApp sebelum membayar.
+    </p>
   </section>
 
   <!-- 02 DUA PANEL IDENTITAS — split asimetris 1.15fr / .85fr dengan rule -->

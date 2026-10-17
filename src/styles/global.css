@@ -15,6 +15,14 @@
   --accent: #B7754D;        /* SATU accent terracotta — 4.57:1 di atas --bg */
   --rule: rgba(180, 185, 155, .26);
   --ease-snap: cubic-bezier(.16, 1, .3, 1);
+
+  /* Duality split hero: sisi kopi hangat/terang + seam */
+  --latte: #C9B28E;                    /* panel kopi — hangat, lebih terang dari --bg */
+  --latte-soft: rgba(32, 28, 24, .74); /* teks sekunder di atas --latte */
+  --latte-rule: rgba(32, 28, 24, .24); /* hairline di atas --latte */
+  --coffee-deep: #6B4A32;              /* aksen teks di atas --latte (~4.6:1) */
+  --ink: #201C18;                      /* teks utama di atas --latte */
+  --seam: rgba(183, 117, 77, .85);     /* garis seam antar panel */
 }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -77,15 +85,6 @@ body {
 @keyframes rise-in {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Kolase asimetris hero: 4:3 besar + 3:4 tinggi + 16:9 lebar */
-.collage { display: grid; gap: .75rem; grid-template-columns: 1fr; }
-@media (min-width: 768px) {
-  .collage { grid-template-columns: 1.06fr .94fr; grid-template-rows: auto auto; }
-  .collage__main { grid-column: 1 / -1; }
-  .collage__tall { grid-column: 1 / 2; }
-  .collage__wide { grid-column: 2 / 3; align-self: end; }
 }
 
 /* Dua panel identitas: split asimetris + rule, bukan dua kartu kembar */
@@ -154,8 +153,176 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 
 ::selection { background: var(--accent); color: #201C18; }
 
+/* ============================================================
+   HERO — DUALITY SPLIT (gym x coffee)
+   Kiri: gelap, berat, grid weight-room. Kanan: hangat, terang,
+   motif cangkir/uap. Seam line + lencana melingkar berputar.
+   Gerak hanya transform/opacity (CSS), mati saat reduced-motion.
+   ============================================================ */
+.duality { display: grid; grid-template-columns: 1fr; background: var(--bg); }
+@media (min-width: 768px) {
+  .duality { grid-template-columns: 1fr 1fr; }
+}
+
+/* KIRI — sisi gym */
+.duality__gym { position: relative; background: var(--bg); }
+.duality__bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.duality__scrim {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(180deg, rgba(32, 28, 24, .92), rgba(32, 28, 24, .62)),
+    repeating-linear-gradient(0deg, rgba(180, 185, 155, .14) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(90deg, rgba(180, 185, 155, .14) 0 1px, transparent 1px 46px);
+  background-size: cover, auto, auto;
+  background-repeat: no-repeat, repeat, repeat;
+}
+
+/* KANAN — sisi kopi */
+.duality__coffee {
+  position: relative;
+  overflow: hidden;
+  color: var(--ink);
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(244, 238, 226, .3), transparent 62%),
+    var(--latte);
+  border-top: 1px solid var(--seam);
+}
+@media (min-width: 768px) {
+  .duality__coffee { border-top: 0; border-left: 1px solid var(--seam); }
+}
+.duality__cup {
+  position: absolute; right: -3rem; bottom: -3.5rem;
+  width: clamp(11rem, 24vw, 19rem); height: auto;
+  color: rgba(32, 28, 24, .13);
+  pointer-events: none;
+}
+
+/* Ruang konten kedua panel */
+.duality__pad {
+  position: relative; z-index: 1;
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.5rem, 4vw, 4rem);
+}
+@media (min-width: 768px) {
+  .duality__gym, .duality__coffee { min-height: 38rem; }
+}
+@media (max-width: 767px) {
+  .duality__coffee .duality__pad { padding-top: 3.75rem; }
+}
+
+/* Tipografi display — gym berat/condensed, kopi ringan/elegan */
+.duality__display {
+  margin: 0;
+  font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -.015em;
+  line-height: .96;
+  font-size: clamp(2.6rem, 5vw, 4.3rem);
+}
+.duality__display--coffee {
+  font-family: 'Italiana', ui-serif, Georgia, serif;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: .005em;
+  line-height: 1.02;
+  font-size: clamp(2.9rem, 5.4vw, 4.7rem);
+}
+
+/* Lead + variasi terang di atas panel latte */
+.duality__lead {
+  margin: 1.1rem 0 0;
+  max-width: 40ch;
+  font-size: .95rem;
+  line-height: 1.65;
+  color: var(--fg-soft);
+}
+.eyebrow.on-latte { color: var(--coffee-deep); }
+.duality__lead.on-latte { color: var(--latte-soft); }
+
+/* Tick kecil pada eyebrow */
+.duality__tick {
+  display: inline-block;
+  width: 1.75rem; height: 1px;
+  margin: 0 .75rem .18em 0;
+  vertical-align: middle;
+  background: var(--sage);
+}
+.duality__tick.on-latte { background: var(--coffee-deep); }
+
+/* Fakta ber-hairline (gym: pilar, kopi: jam) */
+.duality__facts { --fact-rule: var(--rule); border-top: 1px solid var(--fact-rule); }
+.duality__facts > * + * { border-top: 1px solid var(--fact-rule); }
+.duality__coffee .duality__facts { --fact-rule: var(--latte-rule); }
+.duality__fact { display: flex; align-items: center; gap: .85rem; padding: .8rem 0; }
+.duality__dot {
+  flex: none; width: .5rem; height: .5rem;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+.duality__dot.on-latte { background: var(--coffee-deep); }
+
+/* Lencana melingkar di seam */
+.seam-badge {
+  position: absolute; z-index: 30;
+  width: clamp(4.5rem, 9vw, 6.25rem);
+  aspect-ratio: 1;
+  display: grid; place-items: center;
+  border-radius: 9999px;
+  background: var(--bg);
+  border: 1px solid var(--seam);
+  box-shadow: 0 0 0 .4rem rgba(32, 28, 24, .16);
+  left: 50%; bottom: 0;
+  transform: translate(-50%, 50%);
+}
+@media (min-width: 768px) {
+  .seam-badge {
+    left: auto; right: 0; top: 50%; bottom: auto;
+    transform: translate(50%, -50%);
+  }
+}
+.seam-badge__ring {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  animation: seam-spin 28s linear infinite;
+}
+.seam-badge__text {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  fill: var(--accent);
+}
+.seam-badge__core {
+  position: relative; z-index: 1;
+  width: 32%; height: 32%;
+  color: var(--accent);
+}
+@keyframes seam-spin { to { transform: rotate(360deg); } }
+
+/* Catatan label data di bawah split */
+.duality__note {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 1rem clamp(1.5rem, 4vw, 4rem);
+  border-top: 1px solid var(--rule);
+  background: var(--bg);
+  font-size: .72rem;
+  letter-spacing: .01em;
+  color: var(--fg-soft);
+}
+
+/* Tombol outline untuk panel terang */
+.btn-line { border: 1px solid var(--latte-rule); color: var(--ink); background: transparent; }
+.btn-line:hover { border-color: var(--coffee-deep); background: rgba(32, 28, 24, .06); }
+.duality__coffee :focus-visible { outline-color: var(--coffee-deep); }
+
 @media (prefers-reduced-motion: reduce) {
   .rise { animation: none; opacity: 1; transform: none; }
+  .seam-badge__ring { animation: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; }
 }
